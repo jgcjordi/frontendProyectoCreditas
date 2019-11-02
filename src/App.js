@@ -1,24 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
+import PhonesAll from './views/PhonesAll';
+import PhoneDetail from './views/PhoneDetail';
+import NotFound from './views/NotFound';
+import NavigationBar from './components/NavigationBar';
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <HashRouter basename='/'>
+        <NavigationBar />
+        <Switch>
+          <Route path="/phones" exact component={PhonesAll} />
+          <Route path="/phone/:id" exact component={PhoneDetail} />
+          <Redirect path='/' to='phones' />
+          <Route component={NotFound} />
+        </Switch>
+      </HashRouter>
     </div>
   );
 }
