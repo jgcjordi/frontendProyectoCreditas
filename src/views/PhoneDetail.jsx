@@ -13,7 +13,7 @@ class PhoneDetail extends Component {
       versionIndex: 0,
       price: 0,
       ram: "",
-      storage: "",
+      storage: "",//esto y la ram creo que no lo estoy usando
 
     };
 
@@ -80,7 +80,12 @@ class PhoneDetail extends Component {
     return (
       <div className='PhoneDetail'>
         <img className="img-phone" style={{ height: "30rem" }} src={this.state.phone.src} alt="Phone" />
-        <h3 className="data-phone">{this.state.phone.data}</h3>
+
+        <div className="model-phone">{`${this.state.phone.brand} ${this.state.phone.model}`}</div>
+        <div className="model-phone">{`${this.state.price}€`}</div>
+
+
+        <div className="data-phone">{this.state.phone.data}</div>
 
         <form>
           <div>Color</div>
@@ -91,6 +96,8 @@ class PhoneDetail extends Component {
           <div>RAM · Almacenamiento</div>
           {this.fillVersionRadioButtons()}
         </form>
+
+        <button className="btn" type="button" onClick={() => console.log("Purchase Clicked")} >Purchase</button>
 
       </div >
     );
