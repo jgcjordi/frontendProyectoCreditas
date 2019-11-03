@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ApiPhoneService from '../services/ApiPhoneService';
+import BackButton from '../components/BackButton';
 
 
 class PhoneDetail extends Component {
@@ -9,6 +10,7 @@ class PhoneDetail extends Component {
 
     this.state = {
       phone: [],
+
       color: "",
       versionIndex: 0,
       price: 0,
@@ -19,6 +21,10 @@ class PhoneDetail extends Component {
 
     this.getPhoneFromAPI()
   }
+
+
+  
+  ////////////////METHODS////////////
 
   async getPhoneFromAPI() {
     const currentPhoneId = this.props.match.params.id;
@@ -32,43 +38,51 @@ class PhoneDetail extends Component {
     })
   }
 
+
+
+  ////////////////LISTENERS////////////
+
   onRadioButtonColorChange = (ev) => {
     this.setState({
       color: ev.currentTarget.value
-      });
+    });
   }
 
-  
+
   onRadioButtonVersionChange = (ev) => {
     this.setState({
       versionIndex: parseInt(ev.currentTarget.value, 10),
       price: this.state.phone.version[ev.currentTarget.value].price,
       ram: this.state.phone.version[ev.currentTarget.value].ram,
       storage: this.state.phone.version[ev.currentTarget.value].storage
-      });
+    });
   }
+
+
+
+  ////////////////RENDER////////////
 
   fillColorRadioButtons() {
     if (this.state.phone.colors !== undefined) {
       return this.state.phone.colors.map(color => (
         <div key={color}>
-          <input type="radio" name="color" value={color} 
-          checked={this.state.color === color}
-          onChange={this.onRadioButtonColorChange} />
+          <input type="radio" name="color" value={color}
+            checked={this.state.color === color}
+            onChange={this.onRadioButtonColorChange} />
           {color}
         </div>
       ))
     }
   }
-  
+
 
   fillVersionRadioButtons() {
     if (this.state.phone.version !== undefined) {
       return this.state.phone.version.map((version, index) => (
         <div key={index}>
-          <input type="radio" name="version" value={index} 
-          checked={this.state.versionIndex === index}
-          onChange={this.onRadioButtonVersionChange} />
+          <input type="radio" name="version" value={index}
+            checked={this.state.versionIndex === index}
+            onChange={this.onRadioButtonVersionChange} />
           {`${version.ram} GB · ${version.storage} GB`}
         </div>
       ))
@@ -79,6 +93,7 @@ class PhoneDetail extends Component {
 
     return (
       <div className='PhoneDetail'>
+        <BackButton />
         <img className="img-phone" style={{ height: "30rem" }} src={this.state.phone.src} alt="Phone" />
 
         <div className="model-phone">{`${this.state.phone.brand} ${this.state.phone.model}`}</div>

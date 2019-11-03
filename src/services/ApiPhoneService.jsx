@@ -15,6 +15,13 @@ class ApiPhoneService {
     );
     return data;
   }
+
+  async getPhonesFilteredByKeywords(keywords) {
+    const { data } = await axios.get(
+        `http://localhost:8080/phones?search=${keywords}`,
+    );
+    return data;
+  }
 }
 
 export default new ApiPhoneService();
