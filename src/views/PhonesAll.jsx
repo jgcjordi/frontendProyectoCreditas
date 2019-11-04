@@ -3,6 +3,9 @@ import ApiPhoneService from '../services/ApiPhoneService';
 import { Link } from 'react-router-dom';
 import CardPhone from '../components/CardPhone';
 
+import { connect } from 'react-redux';
+import { newIsBackButton, newIsSearchTextBox } from '../actions/toolbar';
+
 
 
 class PhonesAll extends Component {
@@ -13,9 +16,11 @@ class PhonesAll extends Component {
         this.state = {
             phones: [],
             searchPhoneText: ""
-
         };
 
+        this.props.newIsBackButton(false)
+        this.props.newIsSearchTextBox(true)
+        
         this.getDataAllPhonesFromAPI()
     }
 
@@ -49,15 +54,13 @@ class PhonesAll extends Component {
         }
     }
 
-    onSearchPhonesTextChanged = (event) => {
-        this.setState({ searchPhoneText: event.target.value })
-    }
-
     onBtnSearchClicked = () => {
         this.getDataPhonesFilteredByKeywords()
     }
 
-
+    onSearchPhonesTextChanged = (event) => {
+        this.setState({ searchPhoneText: event.target.value })
+    }
 
     ////////////////RENDER////////////
 
@@ -88,4 +91,15 @@ class PhonesAll extends Component {
 
 }
 
-export default PhonesAll;
+
+const mapStateToProps = state => ({
+    isBackButton: state.toolbar.isBackButton,
+    isSearchTextBox: state.toolbar.isSearchTextBox
+})
+
+const mapDispatchToProps = dispatch => ({
+    newIsBackButton: (isBackButton) => dispatch(newIsBackButton(isBackButton)),
+    newIsSearchTextBox: (isSearchTextBox) => dispatch(newIsSearchTextBox(isSearchTextBox))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(PhonesAll);
