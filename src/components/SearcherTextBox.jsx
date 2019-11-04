@@ -1,13 +1,21 @@
 import React from 'react';
+
+import ApiPhoneService from '../services/ApiPhoneService';
+
 import { connect } from 'react-redux';
-import { newPhoneSearchText} from '../actions/toolbar';
+import { newPhoneSearchText } from '../actions/toolbar';
+import { newPhonesJSON } from '../actions/phones';
 
 
 
 function SearcherTextBox(props) {
 
-    const handleKeyDown = () => { console.log("Hola") }
-    const onBtnSearchClicked = () => { console.log(props.phoneSearchText) }
+    const getDataPhonesFilteredByKeywords = async () => {
+        const dataPhonesFromApi = await ApiPhoneService.getPhonesFilteredByKeywords(props.phoneSearchText);
+        console.log(dataPhonesFromApi)
+        props.newPhonesJSON(dataPhonesFromApi)
+        props.newPhoneSearchText("")
+    }
 
 
     return (
@@ -17,11 +25,11 @@ function SearcherTextBox(props) {
                 type="text"
                 placeholder="Mobile Phone"
                 onChange={(ev) => props.newPhoneSearchText(ev.target.value)}
-                onKeyDown={handleKeyDown}
-                value={props.phoneSearchText} 
-                />
-            <button className="buttonSearch" onClick={onBtnSearchClicked}>Search</button>
-            
+                onKeyDown={(ev) => ev.key === 'Enter' && getDataPhonesFilteredByKeywords()}
+                value={props.phoneSearchText}
+            />
+            <button className="buttonSearch" onClick={getDataPhonesFilteredByKeywords}>Search</button>
+
         </div>
     );
 }
@@ -32,7 +40,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    newPhoneSearchText: (phoneSearchText) => dispatch(newPhoneSearchText(phoneSearchText))
+    newPhoneSearchText: (phoneSearchText) => dispatch(newPhoneSearchText(phoneSearchText)),
+    newPhonesJSON: (phonesJSON) => dispatch(newPhonesJSON(phonesJSON))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearcherTextBox);
