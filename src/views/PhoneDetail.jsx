@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ApiPhoneService from '../services/ApiPhoneService';
-import BackButton from '../components/BackButton';
+
+import { connect } from 'react-redux';
+import { newIsBackButton, newIsSearchTextBox } from '../actions/toolbar';
 
 
 class PhoneDetail extends Component {
@@ -15,15 +17,20 @@ class PhoneDetail extends Component {
       versionIndex: 0,
       price: 0,
       ram: "",
-      storage: "",//esto y la ram creo que no lo estoy usando
+      storage: "",//esto y la ram por ahora no lo estoy usando
 
     };
+
+    ///Components to Render in Toolbar
+    this.props.newIsBackButton(true)
+    this.props.newIsSearchTextBox(false)
+
 
     this.getPhoneFromAPI()
   }
 
 
-  
+
   ////////////////METHODS////////////
 
   async getPhoneFromAPI() {
@@ -93,12 +100,10 @@ class PhoneDetail extends Component {
 
     return (
       <div className='PhoneDetail'>
-        <BackButton />
         <img className="img-phone" style={{ height: "30rem" }} src={this.state.phone.src} alt="Phone" />
 
         <div className="model-phone">{`${this.state.phone.brand} ${this.state.phone.model}`}</div>
         <div className="model-phone">{`${this.state.price}€`}</div>
-
 
         <div className="data-phone">{this.state.phone.data}</div>
 
@@ -120,4 +125,14 @@ class PhoneDetail extends Component {
   }
 }
 
-export default PhoneDetail;
+const mapStateToProps = state => ({
+  isBackButton: state.toolbar.isBackButton,
+  isSearchTextBox: state.toolbar.isSearchTextBox,
+})
+
+const mapDispatchToProps = dispatch => ({
+  newIsBackButton: (isBackButton) => dispatch(newIsBackButton(isBackButton)),
+  newIsSearchTextBox: (isSearchTextBox) => dispatch(newIsSearchTextBox(isSearchTextBox)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(PhoneDetail);

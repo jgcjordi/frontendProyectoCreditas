@@ -18,7 +18,7 @@ class PhonesAll extends Component {
         this.props.newIsBackButton(false)
         this.props.newIsSearchTextBox(true)
         
-
+        
         this.getDataAllPhonesFromAPI()
     }
 

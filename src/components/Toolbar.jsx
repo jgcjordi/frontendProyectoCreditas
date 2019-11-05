@@ -1,6 +1,7 @@
 import React from 'react';
 import BackButton from './BackButton';
 import SearcherTextBox from './SearcherTextBox';
+import UserButton from './UserButton';
 import {connect} from 'react-redux'
 
 
@@ -10,9 +11,7 @@ function Toolbar(props) {
     <div className="Toolbar">
         {props.isBackButton && <BackButton/>}
         {props.isSearchTextBox && <SearcherTextBox/>}
-        <div>
-          <button className="btn" type="button" onClick={() => console.log("User")}>User</button>
-        </div>
+        <UserButton/>
     </div>
   );
 }
