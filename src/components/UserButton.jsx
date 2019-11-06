@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './UserButton.css';
 
 
 class UserButton extends Component {
@@ -12,7 +13,7 @@ class UserButton extends Component {
             email: "",
             name: "",
             password: "",
-            rememberMe: false,
+            rememberMe: true,
         };
 
     }
@@ -22,7 +23,11 @@ class UserButton extends Component {
     ////////////////LISTENERS////////////
     onUserClicked = () => {
         this.setState({ showLoginBox: true })
-        console.log("User")
+    }
+
+    onRememberMeChange = () => {
+        let aux = !this.state.rememberMe
+        this.setState({rememberMe: aux})
     }
 
     onSignInClicked = () => {
@@ -37,6 +42,7 @@ class UserButton extends Component {
         if (this.state.showLoginBox) {
             return (
                 <div className="popupLogin">
+                    <div className="backgroundCover" onClick={() => this.setState({showLoginBox: false})}></div>
                     <div className="boxLogin">
                         <form>
                             <div>Login</div>
@@ -62,7 +68,7 @@ class UserButton extends Component {
                                 value={this.state.password}
                             />
                         </form>
-                        <input type="checkbox" name="rememberMe" value={this.state.rememberMe} />Remember me
+                        <input type="checkbox" name="rememberMe" onChange={this.onRememberMeChange}  defaultChecked={this.state.rememberMe}/>Remember me
                         <br />
                         <button className="buttonSignIn" type="button" onClick={this.onSignInClicked}>Sign In</button>
                     </div>

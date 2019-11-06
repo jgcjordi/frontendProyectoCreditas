@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ApiPhoneService from '../services/ApiPhoneService';
 
+import { Redirect } from 'react-router';
+
 import { connect } from 'react-redux';
 import { newIsBackButton, newIsSearchTextBox } from '../actions/toolbar';
 
@@ -9,6 +11,7 @@ class PhoneDetail extends Component {
 
   constructor(props) {
     super(props);
+    console.log("On Create PhoneDetail")
 
     this.state = {
       phone: [],
@@ -19,6 +22,7 @@ class PhoneDetail extends Component {
       ram: "",
       storage: "",//esto y la ram por ahora no lo estoy usando
 
+      purchaseRedirect: false,
     };
 
     ///Components to Render in Toolbar
@@ -63,6 +67,11 @@ class PhoneDetail extends Component {
       ram: this.state.phone.version[ev.currentTarget.value].ram,
       storage: this.state.phone.version[ev.currentTarget.value].storage
     });
+  }
+
+  onPurchaseButtonClicked = () => {
+    console.log("Purchase")
+    this.setState({purchaseRedirect: true})
   }
 
 
@@ -113,11 +122,12 @@ class PhoneDetail extends Component {
         </form>
 
         <form action="">
-          <div>RAM · Almacenamiento</div>
+          <div>RAM · Storage</div>
           {this.fillVersionRadioButtons()}
         </form>
 
-        <button className="btn" type="button" onClick={() => console.log("Purchase Clicked")} >Purchase</button>
+        <button className="btn" type="button" onClick={this.onPurchaseButtonClicked} >Purchase</button>
+        {this.state.purchaseRedirect && <Redirect push to="/purchased" />}
 
       </div >
     );
