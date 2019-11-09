@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import './UserButton.css';
 
+import { connect } from 'react-redux';
+import { newShowLoginBox, newEmail, newName, newPassword, newRememberMe, newIsLogged } from '../actions/user';
+
 
 class UserButton extends Component {
 
@@ -9,7 +12,6 @@ class UserButton extends Component {
 
         this.state = {
             showLoginBox: false,
-
             email: "",
             name: "",
             password: "",
@@ -22,27 +24,28 @@ class UserButton extends Component {
 
     ////////////////LISTENERS////////////
     onUserClicked = () => {
-        this.setState({ showLoginBox: true })
+        this.props.newShowLoginBox(true)
+        //this.setState({ showLoginBox: true })
     }
 
     onRememberMeChange = () => {
-        let aux = !this.state.rememberMe
-        this.setState({rememberMe: aux})
+        let aux = !this.props.rememberMe
+        this.props.newRememberMe(aux)
     }
 
     onSignInClicked = () => {
         console.log("Sign In")
-        console.log(this.state.email)
-        console.log(this.state.name)
-        console.log(this.state.password)
-        console.log(this.state.rememberMe)
+        console.log(this.props.email)
+        console.log(this.props.name)
+        console.log(this.props.password)
+        console.log(this.props.rememberMe)
     }
 
     showLoginPopup() {
-        if (this.state.showLoginBox) {
+        if (this.props.showLoginBox) {
             return (
                 <div className="popupLogin">
-                    <div className="backgroundCover" onClick={() => this.setState({showLoginBox: false})}></div>
+                    <div className="backgroundCover" onClick={() => this.props.newShowLoginBox(false)}></div>
                     <div className="boxLogin">
                         <form>
                             <div>Login</div>
@@ -50,25 +53,25 @@ class UserButton extends Component {
                                 className="textBoxLogin"
                                 type="text"
                                 placeholder="Email"
-                                onChange={(ev) => this.setState({ email: ev.target.value })}
-                                value={this.state.email}
+                                onChange={(ev) => this.props.newEmail(ev.target.value)}
+                                value={this.props.email}
                             />
                             <input
                                 className="textBoxLogin"
                                 type="text"
                                 placeholder="Name"
-                                onChange={(ev) => this.setState({ name: ev.target.value })}
-                                value={this.state.name}
+                                onChange={(ev) => this.props.newName(ev.target.value)}
+                                value={this.props.name}
                             />
                             <input
                                 className="textBoxLogin"
                                 type="password"
                                 placeholder="Password"
-                                onChange={(ev) => this.setState({ password: ev.target.value })}
-                                value={this.state.password}
+                                onChange={(ev) => this.props.newPassword(ev.target.value)}
+                                value={this.props.password}
                             />
                         </form>
-                        <input type="checkbox" name="rememberMe" onChange={this.onRememberMeChange}  defaultChecked={this.state.rememberMe}/>Remember me
+                        <input type="checkbox" name="rememberMe" onChange={this.onRememberMeChange}  defaultChecked={this.props.rememberMe}/>Remember me
                         <br />
                         <button className="buttonSignIn" type="button" onClick={this.onSignInClicked}>Sign In</button>
                     </div>
@@ -93,5 +96,25 @@ class UserButton extends Component {
 
 }
 
-
-export default UserButton;
+const mapStateToProps = state => ({
+    showLoginBox: state.user.showLoginBox,
+    isLogged: state.user.isLogged,
+    rememberMe: state.user.rememberMe,
+    email: state.user.email,
+    password: state.user.password,
+    name: state.user.name
+  })
+  
+  const mapDispatchToProps = dispatch => ({
+    newEmail: (email) => dispatch(newEmail(email)),
+    newPassword: (password) => dispatch(newPassword(password)),
+    newName: (name) => dispatch(newName(name)),
+    newRememberMe: (rememberMe) => dispatch(newRememberMe(rememberMe)),
+    newIsLogged: (isLogged) => dispatch(newIsLogged(isLogged)),
+    newShowLoginBox: (showLoginBox) => dispatch(newShowLoginBox(showLoginBox))
+  })
+  
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(UserButton);

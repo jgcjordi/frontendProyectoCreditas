@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import ApiPhoneService from '../services/ApiPhoneService';
 import { Link } from 'react-router-dom';
 import CardPhone from '../components/CardPhone';
+import './PhonesAll.css';
+
 
 import { connect } from 'react-redux';
 import { newIsBackButton, newIsSearchTextBox } from '../actions/toolbar';
