@@ -11,7 +11,6 @@ class PhoneDetail extends Component {
 
   constructor(props) {
     super(props);
-    console.log("On Create PhoneDetail")
 
     this.state = {
       phone: [],
@@ -40,12 +39,13 @@ class PhoneDetail extends Component {
   async getPhoneFromAPI() {
     const currentPhoneId = this.props.match.params.id;
     const dataPhoneFromApi = await ApiPhoneService.getPhoneById(currentPhoneId);
+    console.log(dataPhoneFromApi)
     this.setState({
       phone: dataPhoneFromApi,
-      color: dataPhoneFromApi.colors[0],
-      price: dataPhoneFromApi.version[0].price,
-      storage: dataPhoneFromApi.version[0].storage,
-      ram: dataPhoneFromApi.version[0].ram,
+      color: dataPhoneFromApi.colors[0].color,
+      price: dataPhoneFromApi.versions[0].price,
+      storage: dataPhoneFromApi.versions[0].storage,
+      ram: dataPhoneFromApi.versions[0].ram,
     })
   }
 
@@ -63,9 +63,9 @@ class PhoneDetail extends Component {
   onRadioButtonVersionChange = (ev) => {
     this.setState({
       versionIndex: parseInt(ev.currentTarget.value, 10),
-      price: this.state.phone.version[ev.currentTarget.value].price,
-      ram: this.state.phone.version[ev.currentTarget.value].ram,
-      storage: this.state.phone.version[ev.currentTarget.value].storage
+      price: this.state.phone.versions[ev.currentTarget.value].price,
+      ram: this.state.phone.versions[ev.currentTarget.value].ram,
+      storage: this.state.phone.versions[ev.currentTarget.value].storage
     });
   }
 
@@ -81,11 +81,11 @@ class PhoneDetail extends Component {
   fillColorRadioButtons() {
     if (this.state.phone.colors !== undefined) {
       return this.state.phone.colors.map(color => (
-        <div key={color}>
-          <input type="radio" name="color" value={color}
-            checked={this.state.color === color}
+        <div key={color.color}>
+          <input type="radio" name="color" value={color.color}
+            checked={this.state.color === color.color}
             onChange={this.onRadioButtonColorChange} />
-          {color}
+          {color.color}
         </div>
       ))
     }
@@ -93,8 +93,8 @@ class PhoneDetail extends Component {
 
 
   fillVersionRadioButtons() {
-    if (this.state.phone.version !== undefined) {
-      return this.state.phone.version.map((version, index) => (
+    if (this.state.phone.versions !== undefined) {
+      return this.state.phone.versions.map((version, index) => (
         <div key={index}>
           <input type="radio" name="version" value={index}
             checked={this.state.versionIndex === index}

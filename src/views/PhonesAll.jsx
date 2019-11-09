@@ -40,8 +40,8 @@ class PhonesAll extends Component {
             <div className="PhonesAll">
                 <div className='phonesList'>
                     {this.props.phonesJSON.map(phone => (
-                        <Link to={'/phone/' + phone.id} key={phone.id}>
-                            <CardPhone phone={phone} key={phone.id} />
+                        <Link to={'/phone/' + phone.id_phone} key={phone.id_phone}>
+                            <CardPhone phone={phone} key={phone.id_phone} />
                         </Link>
 
                     ))}
