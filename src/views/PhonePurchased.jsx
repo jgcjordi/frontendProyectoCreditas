@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-// import ApiPhoneService from '../services/ApiPhoneService';
-// import { Link } from 'react-router-dom';
+import ApiPhoneService from '../services/ApiPhoneService';
+
 
 
 import { connect } from 'react-redux';
@@ -14,29 +14,48 @@ class PhonePurchased extends Component {
 
     this.state = {
       phone: [],
-      name: "David Stanete",
-      src:"https://cdn.phonehouse.es/res/products-image/3/7/7/5/7/377575-2221824.jpg",
-
-      brand:"Xiaomi",
-      model:"Mi 9T",
-      price: 300.00,
-      color: "Yellow",
-      ram: 16,
-      storage: 500,//esto y la ram por ahora no lo estoy usando
-      dataPhone: "Data about the phone asdf asdf asdf asdf asdf asdf asdf asdf asdf asdfasdf asdf asdf asdf asdfasdf  asdf asdf asdf asdfasdf asd fasdf asdf asdf asdf asdf asdf asdf asdf asdfasdf asd fasdf asdf asdf asdf asdf asdf asdf asdf asdfasdf asd fasdf asdf asdf asdf asdf asdf asasd fasdf asdfasdfas dfasdf asd fasdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdfasdf",
-
+      src: "",
+      brand: "",
+      model: "",
+      color: "",
+      price: 0,
+      ram: 0,
+      storage: 0,
+      dataPhone: "",
     };
 
     ///Components to Render in Toolbar
     this.props.newIsBackButton(true)
     this.props.newIsSearchTextBox(false)
-
+    this.getPhoneFromAPI()
   }
 
 
 
   ////////////////METHODS////////////
 
+  async getPhoneFromAPI() {
+    const dataPhoneFromApi = await ApiPhoneService.getPhoneById(this.props.user.idLastPhonePurchased);
+    console.log(dataPhoneFromApi)
+    const version = dataPhoneFromApi.versions.filter(version =>
+      version.id_version_phone === this.props.user.idLastPhonePurchasedVersion)
+    console.log(version)
+    const color = dataPhoneFromApi.colors.filter(color =>
+      color.idColorPhone === this.props.user.idLastPhonePurchasedColor)
+    console.log(color)
+    this.setState({
+      phone: dataPhoneFromApi,
+      src: dataPhoneFromApi.src,
+      brand: dataPhoneFromApi.brand,
+      model: dataPhoneFromApi.model,
+      color: color[0].color,
+      price: version[0].price,
+      ram: version[0].ram,
+      storage: version[0].storage,
+      dataPhone: dataPhoneFromApi.data
+
+    })
+  }
 
 
   ////////////////LISTENERS////////////
@@ -50,7 +69,7 @@ class PhonePurchased extends Component {
 
     return (
       <div className='PhonePurchased'>
-        <h2>Congratulations {this.state.name}</h2>
+        <h2>Congratulations {this.props.user.name}</h2>
         <h5>You have purchased a new phone!</h5>
         <img className="imgPhone" style={{ height: "18rem" }} src={this.state.src} alt="Phone" />
         <h5>{this.state.brand} {this.state.model}</h5>
@@ -66,6 +85,7 @@ class PhonePurchased extends Component {
 const mapStateToProps = state => ({
   isBackButton: state.toolbar.isBackButton,
   isSearchTextBox: state.toolbar.isSearchTextBox,
+  user: state.user.user
 })
 
 const mapDispatchToProps = dispatch => ({

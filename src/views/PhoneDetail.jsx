@@ -5,7 +5,7 @@ import { Redirect } from 'react-router';
 
 import { connect } from 'react-redux';
 import { newIsBackButton, newIsSearchTextBox } from '../actions/toolbar';
-import { newShowLoginBox} from '../actions/user';
+import { newShowLoginBox, newUser } from '../actions/user';
 
 
 class PhoneDetail extends Component {
@@ -17,10 +17,8 @@ class PhoneDetail extends Component {
       phone: [],
 
       color: "",
-      versionIndex: 0,
+      version: 0,
       price: 0,
-      ram: "",
-      storage: "",//esto y la ram por ahora no lo estoy usando
 
       purchaseRedirect: false,
     };
@@ -43,12 +41,25 @@ class PhoneDetail extends Component {
     console.log(dataPhoneFromApi)
     this.setState({
       phone: dataPhoneFromApi,
-      color: dataPhoneFromApi.colors[0].color,
+      color: dataPhoneFromApi.colors[0].idColorPhone,
+      version: dataPhoneFromApi.versions[0].id_version_phone,
       price: dataPhoneFromApi.versions[0].price,
-      storage: dataPhoneFromApi.versions[0].storage,
-      ram: dataPhoneFromApi.versions[0].ram,
+
     })
   }
+
+  async purchasePhone() {
+    const dataUserFromApi = await ApiPhoneService.purchasePhone(this.props.user.id_user, this.state.phone.id_phone,
+      this.state.version, this.state.color);
+    console.log(dataUserFromApi)
+    if(dataUserFromApi){
+        this.props.newUser(dataUserFromApi)
+        this.setState({ purchaseRedirect: true })
+    }else{
+      console.log("It Cant Purchased")
+    }
+
+}
 
 
 
@@ -56,25 +67,24 @@ class PhoneDetail extends Component {
 
   onRadioButtonColorChange = (ev) => {
     this.setState({
-      color: ev.currentTarget.value
+      color: parseInt(ev.currentTarget.value, 10)
     });
   }
 
 
   onRadioButtonVersionChange = (ev) => {
+    const version = this.state.phone.versions.filter(version => 
+      version.id_version_phone === parseInt(ev.currentTarget.value, 10))
     this.setState({
-      versionIndex: parseInt(ev.currentTarget.value, 10),
-      price: this.state.phone.versions[ev.currentTarget.value].price,
-      ram: this.state.phone.versions[ev.currentTarget.value].ram,
-      storage: this.state.phone.versions[ev.currentTarget.value].storage
+      version: parseInt(ev.currentTarget.value, 10),
+      price: version[0].price
     });
   }
 
   onPurchaseButtonClicked = () => {
-    console.log("Purchase")
-    if(this.props.isLogged){
-      this.setState({purchaseRedirect: true})
-    }else{
+    if (this.props.isLogged) {
+      this.purchasePhone()
+    } else {
       this.props.newShowLoginBox(true)
     }
   }
@@ -86,9 +96,9 @@ class PhoneDetail extends Component {
   fillColorRadioButtons() {
     if (this.state.phone.colors !== undefined) {
       return this.state.phone.colors.map(color => (
-        <div key={color.color}>
-          <input type="radio" name="color" value={color.color}
-            checked={this.state.color === color.color}
+        <div key={color.idColorPhone}>
+          <input type="radio" name="color" value={color.idColorPhone}
+            checked={this.state.color === color.idColorPhone}
             onChange={this.onRadioButtonColorChange} />
           {color.color}
         </div>
@@ -99,10 +109,10 @@ class PhoneDetail extends Component {
 
   fillVersionRadioButtons() {
     if (this.state.phone.versions !== undefined) {
-      return this.state.phone.versions.map((version, index) => (
-        <div key={index}>
-          <input type="radio" name="version" value={index}
-            checked={this.state.versionIndex === index}
+      return this.state.phone.versions.map(version => (
+        <div key={version.id_version_phone}>
+          <input type="radio" name="version" value={version.id_version_phone}
+            checked={this.state.version === version.id_version_phone}
             onChange={this.onRadioButtonVersionChange} />
           {`${version.ram} GB · ${version.storage} GB`}
         </div>
@@ -136,7 +146,6 @@ class PhoneDetail extends Component {
 
       </div >
     );
-
   }
 }
 
@@ -144,13 +153,15 @@ const mapStateToProps = state => ({
   isBackButton: state.toolbar.isBackButton,
   isSearchTextBox: state.toolbar.isSearchTextBox,
   isLogged: state.user.isLogged,
-  showLoginBox: state.user.showLoginBox
+  showLoginBox: state.user.showLoginBox,
+  user: state.user.user
 })
 
 const mapDispatchToProps = dispatch => ({
   newIsBackButton: (isBackButton) => dispatch(newIsBackButton(isBackButton)),
   newIsSearchTextBox: (isSearchTextBox) => dispatch(newIsSearchTextBox(isSearchTextBox)),
-  newShowLoginBox: (showLoginBox) => dispatch(newShowLoginBox(showLoginBox))
+  newShowLoginBox: (showLoginBox) => dispatch(newShowLoginBox(showLoginBox)),
+  newUser: (user) => dispatch(newUser(user))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PhoneDetail);

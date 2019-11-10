@@ -38,6 +38,21 @@ class ApiPhoneService {
     else{return false}
   }
 
+  async purchasePhone(idUser, idPhone, idVersion, idColor) {
+    let status = false
+    let userData
+    await axios.get(
+      `http://localhost:8080/api/v1/user/${idUser}/${idPhone}/${idVersion}/${idColor}`,
+    ).then(response => {
+      if (response.status === 200){
+        status = true
+        userData = response.data
+      }
+    });
+    if(status){return userData}
+    else{return false}
+  }
+
 }
 
 export default new ApiPhoneService();

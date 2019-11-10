@@ -49,13 +49,21 @@ class UserButton extends Component {
     }
 
     onSignInClicked = () => {
-        console.log("Sign In")
-        console.log(this.props.emailTextBox)
-        console.log(this.props.nameTextBox)
-        console.log(this.props.passwordTextBox)
-        console.log(this.props.rememberMe)
-        console.log("Axios")
-        this.trySignIn()
+        if(this.props.emailTextBox !== "" && this.props.passwordTextBox !== ""){
+            console.log(this.props.emailTextBox)
+            console.log(this.props.nameTextBox)
+            console.log(this.props.passwordTextBox)
+            console.log("Remember me:" + this.props.rememberMe)
+            this.trySignIn()
+        }else{
+            this.setState({isEmailOrPasswordWrong: true})
+        }
+
+    }
+
+    onBackgroundCoverClick = () => {
+        this.props.newShowLoginBox(false)
+        this.setState({isEmailOrPasswordWrong: false})
     }
 
 
@@ -65,7 +73,7 @@ class UserButton extends Component {
         if (this.props.showLoginBox) {
             return (
                 <div className="popupLogin">
-                    <div className="backgroundCover" onClick={() => this.props.newShowLoginBox(false)}></div>
+                    <div className="backgroundCover" onClick={this.onBackgroundCoverClick}></div>
                     <div className="boxLogin">
                         <form>
                             <div>Login</div>
@@ -75,6 +83,7 @@ class UserButton extends Component {
                                 placeholder="Email"
                                 onChange={(ev) => this.props.newEmailTextBox(ev.target.value)}
                                 value={this.props.emailTextBox}
+                                onKeyDown={(ev) => ev.key === 'Enter' && this.onSignInClicked()}
                             />
                             <input
                                 className="textBoxLogin"
@@ -82,6 +91,7 @@ class UserButton extends Component {
                                 placeholder="Name"
                                 onChange={(ev) => this.props.newNameTextBox(ev.target.value)}
                                 value={this.props.nameTextBox}
+                                onKeyDown={(ev) => ev.key === 'Enter' && this.onSignInClicked()}
                             />
                             <input
                                 className="textBoxLogin"
@@ -89,6 +99,7 @@ class UserButton extends Component {
                                 placeholder="Password"
                                 onChange={(ev) => this.props.newPasswordTextBox(ev.target.value)}
                                 value={this.props.passwordTextBox}
+                                onKeyDown={(ev) => ev.key === 'Enter' && this.onSignInClicked()}
                             />
                         </form>
                         <input type="checkbox" name="rememberMe" onChange={this.onRememberMeChange}  defaultChecked={this.props.rememberMe}/>Remember me
