@@ -1,31 +1,46 @@
 import React, { Component } from 'react';
 import './UserButton.css';
 
+import ApiPhoneService from '../services/ApiPhoneService';
+
 import { connect } from 'react-redux';
-import { newShowLoginBox, newEmail, newName, newPassword, newRememberMe, newIsLogged } from '../actions/user';
+import { newShowLoginBox, newEmailTextBox, newNameTextBox, newPasswordTextBox, newRememberMe, 
+    newIsLogged, newUser } from '../actions/user';
 
 
 class UserButton extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
-            showLoginBox: false,
-            email: "",
-            name: "",
-            password: "",
-            rememberMe: true,
-        };
+            isEmailOrPasswordWrong: false,
+          };
+    }
+
+
+    ////////////////METHODS////////////
+    async trySignIn() {
+        const dataUserFromApi = await ApiPhoneService.tryLogIn(this.props.emailTextBox, this.props.passwordTextBox);
+        console.log(dataUserFromApi)
+        if(dataUserFromApi){
+            this.props.newUser(dataUserFromApi)
+            this.props.newIsLogged(true)
+            this.props.newShowLoginBox(false)
+            this.setState({isEmailOrPasswordWrong: false})
+        }else{
+            this.setState({isEmailOrPasswordWrong: true})
+        }
 
     }
 
 
-
     ////////////////LISTENERS////////////
     onUserClicked = () => {
-        this.props.newShowLoginBox(true)
-        //this.setState({ showLoginBox: true })
+        if(this.props.isLogged){
+            console.log("Usuario Logueado")
+        }else{
+            this.props.newShowLoginBox(true)
+        }
     }
 
     onRememberMeChange = () => {
@@ -35,11 +50,16 @@ class UserButton extends Component {
 
     onSignInClicked = () => {
         console.log("Sign In")
-        console.log(this.props.email)
-        console.log(this.props.name)
-        console.log(this.props.password)
+        console.log(this.props.emailTextBox)
+        console.log(this.props.nameTextBox)
+        console.log(this.props.passwordTextBox)
         console.log(this.props.rememberMe)
+        console.log("Axios")
+        this.trySignIn()
     }
+
+
+    ////////////////RENDER////////////
 
     showLoginPopup() {
         if (this.props.showLoginBox) {
@@ -53,35 +73,34 @@ class UserButton extends Component {
                                 className="textBoxLogin"
                                 type="text"
                                 placeholder="Email"
-                                onChange={(ev) => this.props.newEmail(ev.target.value)}
-                                value={this.props.email}
+                                onChange={(ev) => this.props.newEmailTextBox(ev.target.value)}
+                                value={this.props.emailTextBox}
                             />
                             <input
                                 className="textBoxLogin"
                                 type="text"
                                 placeholder="Name"
-                                onChange={(ev) => this.props.newName(ev.target.value)}
-                                value={this.props.name}
+                                onChange={(ev) => this.props.newNameTextBox(ev.target.value)}
+                                value={this.props.nameTextBox}
                             />
                             <input
                                 className="textBoxLogin"
                                 type="password"
                                 placeholder="Password"
-                                onChange={(ev) => this.props.newPassword(ev.target.value)}
-                                value={this.props.password}
+                                onChange={(ev) => this.props.newPasswordTextBox(ev.target.value)}
+                                value={this.props.passwordTextBox}
                             />
                         </form>
                         <input type="checkbox" name="rememberMe" onChange={this.onRememberMeChange}  defaultChecked={this.props.rememberMe}/>Remember me
                         <br />
                         <button className="buttonSignIn" type="button" onClick={this.onSignInClicked}>Sign In</button>
+                        {this.state.isEmailOrPasswordWrong && 
+                        <h6>Email or password is wrong</h6>}
                     </div>
                 </div>)
         }
     }
 
-
-
-    ////////////////RENDER////////////
 
     render() {
         return (
@@ -96,22 +115,26 @@ class UserButton extends Component {
 
 }
 
+
+
 const mapStateToProps = state => ({
     showLoginBox: state.user.showLoginBox,
     isLogged: state.user.isLogged,
     rememberMe: state.user.rememberMe,
-    email: state.user.email,
-    password: state.user.password,
-    name: state.user.name
+    emailTextBox: state.user.emailTextBox,
+    passwordTextBox: state.user.passwordTextBox,
+    nameTextBox: state.user.nameTextBox,
+    user: state.user.user
   })
   
   const mapDispatchToProps = dispatch => ({
-    newEmail: (email) => dispatch(newEmail(email)),
-    newPassword: (password) => dispatch(newPassword(password)),
-    newName: (name) => dispatch(newName(name)),
+    newEmailTextBox: (emailTextBox) => dispatch(newEmailTextBox(emailTextBox)),
+    newPasswordTextBox: (passwordTextBox) => dispatch(newPasswordTextBox(passwordTextBox)),
+    newNameTextBox: (nameTextBox) => dispatch(newNameTextBox(nameTextBox)),
     newRememberMe: (rememberMe) => dispatch(newRememberMe(rememberMe)),
     newIsLogged: (isLogged) => dispatch(newIsLogged(isLogged)),
-    newShowLoginBox: (showLoginBox) => dispatch(newShowLoginBox(showLoginBox))
+    newShowLoginBox: (showLoginBox) => dispatch(newShowLoginBox(showLoginBox)),
+    newUser: (user) => dispatch(newUser(user))
   })
   
   export default connect(

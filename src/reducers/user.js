@@ -2,9 +2,10 @@ const INITIAL_STATE = {
     showLoginBox: false,
     isLogged: false,
     rememberMe: false,
-    email: "",
-    password: "",
-    name: ""
+    emailTextBox: "",
+    passwordTextBox: "",
+    nameTextBox: "",
+    user: []
 }
 
 /////REDUCER WITH HIS ACTIONS/////
@@ -15,20 +16,20 @@ const user = (state = INITIAL_STATE, action) => {
                 ...state,
                 showLoginBox: action.payload.showLoginBox,
             }
-        case 'NEW_EMAIL':
+        case 'NEW_EMAIL_TEXT_BOX':
             return {
                 ...state,
-                email: action.payload.email,
+                emailTextBox: action.payload.emailTextBox,
             }
-        case 'NEW_NAME':
+        case 'NEW_NAME_TEXT_BOX':
             return {
                 ...state,
-                name: action.payload.name,
+                nameTextBox: action.payload.nameTextBox,
             }
-        case 'NEW_PASSWORD':
+        case 'NEW_PASSWORD_TEXT_BOX':
             return {
                 ...state,
-                password: action.payload.password,
+                passwordTextBox: action.payload.passwordTextBox,
             }
         case 'NEW_REMEMBER_ME':
             return {
@@ -39,6 +40,11 @@ const user = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isLogged: action.payload.isLogged,
+            }
+        case 'NEW_USER':
+            return {
+                ...state,
+                user: action.payload.user,
             }
 
         default:

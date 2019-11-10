@@ -5,6 +5,7 @@ import { Redirect } from 'react-router';
 
 import { connect } from 'react-redux';
 import { newIsBackButton, newIsSearchTextBox } from '../actions/toolbar';
+import { newShowLoginBox} from '../actions/user';
 
 
 class PhoneDetail extends Component {
@@ -71,7 +72,11 @@ class PhoneDetail extends Component {
 
   onPurchaseButtonClicked = () => {
     console.log("Purchase")
-    this.setState({purchaseRedirect: true})
+    if(this.props.isLogged){
+      this.setState({purchaseRedirect: true})
+    }else{
+      this.props.newShowLoginBox(true)
+    }
   }
 
 
@@ -138,11 +143,14 @@ class PhoneDetail extends Component {
 const mapStateToProps = state => ({
   isBackButton: state.toolbar.isBackButton,
   isSearchTextBox: state.toolbar.isSearchTextBox,
+  isLogged: state.user.isLogged,
+  showLoginBox: state.user.showLoginBox
 })
 
 const mapDispatchToProps = dispatch => ({
   newIsBackButton: (isBackButton) => dispatch(newIsBackButton(isBackButton)),
   newIsSearchTextBox: (isSearchTextBox) => dispatch(newIsSearchTextBox(isSearchTextBox)),
+  newShowLoginBox: (showLoginBox) => dispatch(newShowLoginBox(showLoginBox))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PhoneDetail);

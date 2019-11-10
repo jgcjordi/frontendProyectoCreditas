@@ -6,28 +6,28 @@ export const newShowLoginBox =
         }
     })
 
-export const newEmail =
-    (email) => ({
-        type: 'NEW_EMAIL',
+export const newEmailTextBox =
+    (emailTextBox) => ({
+        type: 'NEW_EMAIL_TEXT_BOX',
         payload: {
-            email,
+            emailTextBox,
         }
     })
 
-export const newName =
-    (name) => ({
-        type: 'NEW_NAME',
+export const newNameTextBox =
+    (nameTextBox) => ({
+        type: 'NEW_NAME_TEXT_BOX',
         payload: {
-            name,
+            nameTextBox,
         }
     })
 
 
-export const newPassword =
-    (password) => ({
-        type: 'NEW_PASSWORD',
+export const newPasswordTextBox =
+    (passwordTextBox) => ({
+        type: 'NEW_PASSWORD_TEXT_BOX',
         payload: {
-            password,
+            passwordTextBox,
         }
     })
 
@@ -44,5 +44,13 @@ export const newIsLogged =
         type: 'NEW_IS_LOGGED',
         payload: {
             isLogged,
+        }
+    })
+
+export const newUser =
+    (user) => ({
+        type: 'NEW_USER',
+        payload: {
+            user,
         }
     })
