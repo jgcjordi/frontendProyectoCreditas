@@ -1,7 +1,7 @@
 const INITIAL_STATE = {
     isBackButton: true,
     isSearchTextBox: true,
-    phoneSearchText: ""
+    phoneSearchText: "",
 }
 
 /////REDUCER WITH HIS ACTIONS/////
@@ -24,6 +24,7 @@ const toolbar = (state = INITIAL_STATE, action) => {
                 ...state,
                 phoneSearchText: action.payload.phoneSearchText,
             }
+
 
         default:
             return state;

@@ -5,7 +5,8 @@ const INITIAL_STATE = {
     emailTextBox: "",
     passwordTextBox: "",
     nameTextBox: "",
-    user: []
+    user: [],
+    lastPurchaseRedirect: false
 }
 
 /////REDUCER WITH HIS ACTIONS/////
@@ -45,6 +46,11 @@ const user = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 user: action.payload.user,
+            }
+        case 'NEW_LAST_PURCHASE_REDIRECT':
+            return {
+                ...state,
+                lastPurchaseRedirect: action.payload.lastPurchaseRedirect,
             }
 
         default:

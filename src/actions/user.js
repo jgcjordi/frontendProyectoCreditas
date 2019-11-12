@@ -54,3 +54,11 @@ export const newUser =
             user,
         }
     })
+
+export const newLastPurchaseRedirect =
+    (lastPurchaseRedirect) => ({
+        type: 'NEW_LAST_PURCHASE_REDIRECT',
+        payload: {
+            lastPurchaseRedirect,
+        }
+    })

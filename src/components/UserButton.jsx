@@ -3,9 +3,14 @@ import './UserButton.css';
 
 import ApiPhoneService from '../services/ApiPhoneService';
 
+import { Redirect } from 'react-router';
+import { withRouter } from 'react-router-dom';
+
 import { connect } from 'react-redux';
-import { newShowLoginBox, newEmailTextBox, newNameTextBox, newPasswordTextBox, newRememberMe, 
-    newIsLogged, newUser } from '../actions/user';
+import {
+    newShowLoginBox, newEmailTextBox, newNameTextBox, newPasswordTextBox, newRememberMe,
+    newIsLogged, newUser, newLastPurchaseRedirect
+} from '../actions/user';
 
 
 class UserButton extends Component {
@@ -13,8 +18,8 @@ class UserButton extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isEmailOrPasswordWrong: false,
-          };
+            isEmailOrPasswordWrong: false
+        };
     }
 
 
@@ -22,13 +27,13 @@ class UserButton extends Component {
     async trySignIn() {
         const dataUserFromApi = await ApiPhoneService.tryLogIn(this.props.emailTextBox, this.props.passwordTextBox);
         console.log(dataUserFromApi)
-        if(dataUserFromApi){
+        if (dataUserFromApi) {
             this.props.newUser(dataUserFromApi)
             this.props.newIsLogged(true)
             this.props.newShowLoginBox(false)
-            this.setState({isEmailOrPasswordWrong: false})
-        }else{
-            this.setState({isEmailOrPasswordWrong: true})
+            this.setState({ isEmailOrPasswordWrong: false })
+        } else {
+            this.setState({ isEmailOrPasswordWrong: true })
         }
 
     }
@@ -36,9 +41,15 @@ class UserButton extends Component {
 
     ////////////////LISTENERS////////////
     onUserClicked = () => {
-        if(this.props.isLogged){
-            console.log("Usuario Logueado")
-        }else{
+        if (this.props.isLogged) {
+            if (this.props.location.pathname !== "/purchased") {
+                if (this.props.user.idLastPhonePurchased === -1) {
+                    console.log("No has comprado ningun telefono todavia")
+                } else {
+                    this.props.newLastPurchaseRedirect(true)
+                }
+            }
+        } else {
             this.props.newShowLoginBox(true)
         }
     }
@@ -49,21 +60,21 @@ class UserButton extends Component {
     }
 
     onSignInClicked = () => {
-        if(this.props.emailTextBox !== "" && this.props.passwordTextBox !== ""){
+        if (this.props.emailTextBox !== "" && this.props.passwordTextBox !== "") {
             console.log(this.props.emailTextBox)
             console.log(this.props.nameTextBox)
             console.log(this.props.passwordTextBox)
             console.log("Remember me:" + this.props.rememberMe)
             this.trySignIn()
-        }else{
-            this.setState({isEmailOrPasswordWrong: true})
+        } else {
+            this.setState({ isEmailOrPasswordWrong: true })
         }
 
     }
 
     onBackgroundCoverClick = () => {
         this.props.newShowLoginBox(false)
-        this.setState({isEmailOrPasswordWrong: false})
+        this.setState({ isEmailOrPasswordWrong: false })
     }
 
 
@@ -102,11 +113,11 @@ class UserButton extends Component {
                                 onKeyDown={(ev) => ev.key === 'Enter' && this.onSignInClicked()}
                             />
                         </form>
-                        <input type="checkbox" name="rememberMe" onChange={this.onRememberMeChange}  defaultChecked={this.props.rememberMe}/>Remember me
+                        <input type="checkbox" name="rememberMe" onChange={this.onRememberMeChange} defaultChecked={this.props.rememberMe} />Remember me
                         <br />
                         <button className="buttonSignIn" type="button" onClick={this.onSignInClicked}>Sign In</button>
-                        {this.state.isEmailOrPasswordWrong && 
-                        <h6>Email or password is wrong</h6>}
+                        {this.state.isEmailOrPasswordWrong &&
+                            <h6>Email or password is wrong</h6>}
                     </div>
                 </div>)
         }
@@ -120,6 +131,7 @@ class UserButton extends Component {
                     <button className="button" type="button" onClick={this.onUserClicked}>User</button>
                 </div>
                 {this.showLoginPopup()}
+                {this.props.lastPurchaseRedirect && <Redirect push to="/purchased" />}
             </div>
         );
     }
@@ -135,20 +147,22 @@ const mapStateToProps = state => ({
     emailTextBox: state.user.emailTextBox,
     passwordTextBox: state.user.passwordTextBox,
     nameTextBox: state.user.nameTextBox,
-    user: state.user.user
-  })
-  
-  const mapDispatchToProps = dispatch => ({
+    user: state.user.user,
+    lastPurchaseRedirect: state.user.lastPurchaseRedirect
+})
+
+const mapDispatchToProps = dispatch => ({
     newEmailTextBox: (emailTextBox) => dispatch(newEmailTextBox(emailTextBox)),
     newPasswordTextBox: (passwordTextBox) => dispatch(newPasswordTextBox(passwordTextBox)),
     newNameTextBox: (nameTextBox) => dispatch(newNameTextBox(nameTextBox)),
     newRememberMe: (rememberMe) => dispatch(newRememberMe(rememberMe)),
     newIsLogged: (isLogged) => dispatch(newIsLogged(isLogged)),
     newShowLoginBox: (showLoginBox) => dispatch(newShowLoginBox(showLoginBox)),
-    newUser: (user) => dispatch(newUser(user))
-  })
-  
-  export default connect(
+    newUser: (user) => dispatch(newUser(user)),
+    newLastPurchaseRedirect: (lastPurchaseRedirect) => dispatch(newLastPurchaseRedirect(lastPurchaseRedirect))
+})
+
+export default withRouter(connect(
     mapStateToProps,
     mapDispatchToProps,
-  )(UserButton);
+)(UserButton));

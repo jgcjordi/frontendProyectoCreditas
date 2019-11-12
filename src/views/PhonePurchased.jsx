@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import ApiPhoneService from '../services/ApiPhoneService';
 
 
-
 import { connect } from 'react-redux';
 import { newIsBackButton, newIsSearchTextBox } from '../actions/toolbar';
+import { newLastPurchaseRedirect } from '../actions/user';
 
 
 class PhonePurchased extends Component {
@@ -27,6 +27,7 @@ class PhonePurchased extends Component {
     ///Components to Render in Toolbar
     this.props.newIsBackButton(true)
     this.props.newIsSearchTextBox(false)
+    this.props.newLastPurchaseRedirect(false)
     this.getPhoneFromAPI()
   }
 
@@ -39,10 +40,8 @@ class PhonePurchased extends Component {
     console.log(dataPhoneFromApi)
     const version = dataPhoneFromApi.versions.filter(version =>
       version.id_version_phone === this.props.user.idLastPhonePurchasedVersion)
-    console.log(version)
     const color = dataPhoneFromApi.colors.filter(color =>
       color.idColorPhone === this.props.user.idLastPhonePurchasedColor)
-    console.log(color)
     this.setState({
       phone: dataPhoneFromApi,
       src: dataPhoneFromApi.src,
@@ -56,9 +55,6 @@ class PhonePurchased extends Component {
 
     })
   }
-
-
-  ////////////////LISTENERS////////////
 
 
 
@@ -85,12 +81,14 @@ class PhonePurchased extends Component {
 const mapStateToProps = state => ({
   isBackButton: state.toolbar.isBackButton,
   isSearchTextBox: state.toolbar.isSearchTextBox,
-  user: state.user.user
+  user: state.user.user,
+  lastPurchaseRedirect: state.user.lastPurchaseRedirect
 })
 
 const mapDispatchToProps = dispatch => ({
   newIsBackButton: (isBackButton) => dispatch(newIsBackButton(isBackButton)),
   newIsSearchTextBox: (isSearchTextBox) => dispatch(newIsSearchTextBox(isSearchTextBox)),
+  newLastPurchaseRedirect: (lastPurchaseRedirect) => dispatch(newLastPurchaseRedirect(lastPurchaseRedirect))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PhonePurchased);
