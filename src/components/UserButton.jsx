@@ -29,6 +29,8 @@ class UserButton extends Component {
         console.log(dataUserFromApi)
         if (dataUserFromApi) {
             this.props.newUser(dataUserFromApi)
+            sessionStorage.setItem('User', JSON.stringify(dataUserFromApi));
+            sessionStorage.setItem('Token', dataUserFromApi.password);
             this.props.newIsLogged(true)
             this.props.newShowLoginBox(false)
             this.setState({ isEmailOrPasswordWrong: false })
@@ -44,7 +46,7 @@ class UserButton extends Component {
         if (this.props.isLogged) {
             if (this.props.location.pathname !== "/purchased") {
                 if (this.props.user.idLastPhonePurchased === -1) {
-                    console.log("No has comprado ningun telefono todavia")
+                    console.log("Yo haven't bought any phone yet")
                 } else {
                     this.props.newLastPurchaseRedirect(true)
                 }

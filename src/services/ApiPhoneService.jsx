@@ -22,12 +22,15 @@ class ApiPhoneService {
     );
     return data;
   }
-
+  
   async tryLogIn(email, password) {
     let status = false
     let userData
-    await axios.get(
-      `http://localhost:8080/api/v1/user/${email}/${password}`,
+    await axios.post(
+      `http://localhost:8080/api/v1/user/login`,{
+        email: `${email}`,
+        password: `${password}`
+      }
     ).then(response => {
       if (response.status === 200){
         status = true
@@ -38,16 +41,26 @@ class ApiPhoneService {
     else{return false}
   }
 
-  async purchasePhone(idUser, idPhone, idVersion, idColor) {
+  async purchasePhone(idUser, idPhone, idVersion, idColor, token) {
     let status = false
     let userData
-    await axios.get(
-      `http://localhost:8080/api/v1/user/${idUser}/${idPhone}/${idVersion}/${idColor}`,
+    const options = {
+      headers: {'Authorization': `${token}`}
+    };
+    await axios.post(
+      `http://localhost:8080/api/v1/user/logged/purchase`,{
+        id_user: `${idUser}`,
+        idLastPhonePurchased: `${idPhone}`,
+        idLastPhonePurchasedVersion: `${idVersion}`,
+        idLastPhonePurchasedColor: `${idColor}`
+      },options
     ).then(response => {
       if (response.status === 200){
         status = true
         userData = response.data
       }
+    }).catch(error => {
+      console.log(error)
     });
     if(status){return userData}
     else{return false}

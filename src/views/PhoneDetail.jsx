@@ -50,16 +50,17 @@ class PhoneDetail extends Component {
 
   async purchasePhone() {
     const dataUserFromApi = await ApiPhoneService.purchasePhone(this.props.user.id_user, this.state.phone.id_phone,
-      this.state.version, this.state.color);
+      this.state.version, this.state.color, sessionStorage.getItem('Token'));
     console.log(dataUserFromApi)
-    if(dataUserFromApi){
-        this.props.newUser(dataUserFromApi)
-        this.setState({ purchaseRedirect: true })
-    }else{
+    if (dataUserFromApi) {
+      sessionStorage.setItem('User', JSON.stringify(dataUserFromApi));
+      this.props.newUser(dataUserFromApi)
+      this.setState({ purchaseRedirect: true })
+    } else {
       console.log("It Cant Purchased")
     }
 
-}
+  }
 
 
 
@@ -73,7 +74,7 @@ class PhoneDetail extends Component {
 
 
   onRadioButtonVersionChange = (ev) => {
-    const version = this.state.phone.versions.filter(version => 
+    const version = this.state.phone.versions.filter(version =>
       version.id_version_phone === parseInt(ev.currentTarget.value, 10))
     this.setState({
       version: parseInt(ev.currentTarget.value, 10),
