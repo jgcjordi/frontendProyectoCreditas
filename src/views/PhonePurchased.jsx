@@ -28,6 +28,7 @@ class PhonePurchased extends Component {
     this.props.newIsBackButton(true)
     this.props.newIsSearchTextBox(false)
     this.props.newLastPurchaseRedirect(false)
+    
     this.getPhoneFromAPI()
   }
 

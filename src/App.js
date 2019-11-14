@@ -8,6 +8,7 @@ import PhonesAll from './views/PhonesAll';
 import PhoneDetail from './views/PhoneDetail';
 import NotFound from './views/NotFound';
 import PhonePurchased from './views/PhonePurchased';
+import Footer from './components/Footer';
 
 
 
@@ -24,6 +25,7 @@ function App() {
           <Redirect path='/' to='phones' />
           <Route component={NotFound} />
         </Switch>
+        <Footer/>
       </HashRouter>
     </div>
   );

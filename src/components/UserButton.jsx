@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import {
-    newShowLoginBox, newEmailTextBox, newNameTextBox, newPasswordTextBox, newRememberMe,
+    newShowLoginBox, newRememberMe,
     newIsLogged, newUser, newLastPurchaseRedirect
 } from '../actions/user';
 
@@ -18,6 +18,9 @@ class UserButton extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            emailTextBox: "",
+            nameTextBox: "",
+            passwordTextBox: "",
             isEmailOrPasswordWrong: false
         };
     }
@@ -25,7 +28,7 @@ class UserButton extends Component {
 
     ////////////////METHODS////////////
     async trySignIn() {
-        const dataUserFromApi = await ApiPhoneService.tryLogIn(this.props.emailTextBox, this.props.passwordTextBox);
+        const dataUserFromApi = await ApiPhoneService.tryLogIn(this.state.emailTextBox, this.state.passwordTextBox);
         console.log(dataUserFromApi)
         if (dataUserFromApi) {
             this.props.newUser(dataUserFromApi)
@@ -50,6 +53,8 @@ class UserButton extends Component {
                 } else {
                     this.props.newLastPurchaseRedirect(true)
                 }
+            } else {
+                console.log("Here te button User dont show nothing")
             }
         } else {
             this.props.newShowLoginBox(true)
@@ -62,10 +67,10 @@ class UserButton extends Component {
     }
 
     onSignInClicked = () => {
-        if (this.props.emailTextBox !== "" && this.props.passwordTextBox !== "") {
-            console.log(this.props.emailTextBox)
-            console.log(this.props.nameTextBox)
-            console.log(this.props.passwordTextBox)
+        if (this.state.emailTextBox !== "" && this.state.passwordTextBox !== "") {
+            console.log(this.state.emailTextBox)
+            console.log(this.state.nameTextBox)
+            console.log(this.state.passwordTextBox)
             console.log("Remember me:" + this.props.rememberMe)
             this.trySignIn()
         } else {
@@ -94,24 +99,24 @@ class UserButton extends Component {
                                 className="textBoxLogin"
                                 type="text"
                                 placeholder="Email"
-                                onChange={(ev) => this.props.newEmailTextBox(ev.target.value)}
-                                value={this.props.emailTextBox}
+                                onChange={(ev) => this.setState({ emailTextBox: ev.target.value })}
+                                value={this.state.emailTextBox}
                                 onKeyDown={(ev) => ev.key === 'Enter' && this.onSignInClicked()}
                             />
                             <input
                                 className="textBoxLogin"
                                 type="text"
                                 placeholder="Name"
-                                onChange={(ev) => this.props.newNameTextBox(ev.target.value)}
-                                value={this.props.nameTextBox}
+                                onChange={(ev) => this.setState({ nameTextBox: ev.target.value })}
+                                value={this.state.nameTextBox}
                                 onKeyDown={(ev) => ev.key === 'Enter' && this.onSignInClicked()}
                             />
                             <input
                                 className="textBoxLogin"
                                 type="password"
                                 placeholder="Password"
-                                onChange={(ev) => this.props.newPasswordTextBox(ev.target.value)}
-                                value={this.props.passwordTextBox}
+                                onChange={(ev) => this.setState({ passwordTextBox: ev.target.value })}
+                                value={this.state.passwordTextBox}
                                 onKeyDown={(ev) => ev.key === 'Enter' && this.onSignInClicked()}
                             />
                         </form>
@@ -146,17 +151,11 @@ const mapStateToProps = state => ({
     showLoginBox: state.user.showLoginBox,
     isLogged: state.user.isLogged,
     rememberMe: state.user.rememberMe,
-    emailTextBox: state.user.emailTextBox,
-    passwordTextBox: state.user.passwordTextBox,
-    nameTextBox: state.user.nameTextBox,
     user: state.user.user,
     lastPurchaseRedirect: state.user.lastPurchaseRedirect
 })
 
 const mapDispatchToProps = dispatch => ({
-    newEmailTextBox: (emailTextBox) => dispatch(newEmailTextBox(emailTextBox)),
-    newPasswordTextBox: (passwordTextBox) => dispatch(newPasswordTextBox(passwordTextBox)),
-    newNameTextBox: (nameTextBox) => dispatch(newNameTextBox(nameTextBox)),
     newRememberMe: (rememberMe) => dispatch(newRememberMe(rememberMe)),
     newIsLogged: (isLogged) => dispatch(newIsLogged(isLogged)),
     newShowLoginBox: (showLoginBox) => dispatch(newShowLoginBox(showLoginBox)),

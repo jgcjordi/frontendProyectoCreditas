@@ -5,7 +5,7 @@ import { Redirect } from 'react-router';
 
 import { connect } from 'react-redux';
 import { newIsBackButton, newIsSearchTextBox } from '../actions/toolbar';
-import { newShowLoginBox, newUser } from '../actions/user';
+import { newShowLoginBox, newUser, newIsLogged } from '../actions/user';
 
 
 class PhoneDetail extends Component {
@@ -56,8 +56,12 @@ class PhoneDetail extends Component {
       sessionStorage.setItem('User', JSON.stringify(dataUserFromApi));
       this.props.newUser(dataUserFromApi)
       this.setState({ purchaseRedirect: true })
-    } else {
+    } else {//"It Cant Purchased, try login again"
       console.log("It Cant Purchased")
+      localStorage.removeItem('User');
+      localStorage.removeItem('Token');
+      this.props.newIsLogged(false)
+      this.props.newShowLoginBox(true)
     }
 
   }
@@ -162,6 +166,7 @@ const mapDispatchToProps = dispatch => ({
   newIsBackButton: (isBackButton) => dispatch(newIsBackButton(isBackButton)),
   newIsSearchTextBox: (isSearchTextBox) => dispatch(newIsSearchTextBox(isSearchTextBox)),
   newShowLoginBox: (showLoginBox) => dispatch(newShowLoginBox(showLoginBox)),
+  newIsLogged: (isLogged) => dispatch(newIsLogged(isLogged)),
   newUser: (user) => dispatch(newUser(user))
 })
 

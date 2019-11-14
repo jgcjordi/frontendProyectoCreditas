@@ -60,7 +60,7 @@ class ApiPhoneService {
         userData = response.data
       }
     }).catch(error => {
-      console.log(error)
+      //console.log(error)
     });
     if(status){return userData}
     else{return false}
