@@ -45,9 +45,11 @@ class PhonesAll extends Component {
                         <Link to={'/phone/' + phone.id_phone} key={phone.id_phone}>
                             <CardPhone phone={phone} key={phone.id_phone} />
                         </Link>
-
                     ))}
                 </div>
+                {this.props.phonesJSON.length === 0 &&
+                    <div>No results found for that search.</div>
+                }
             </div>
         );
     }

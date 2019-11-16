@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import ApiPhoneService from '../services/ApiPhoneService';
-import SaveOnBrowserStorageService from '../services/SaveOnBrowserStorageService';
+import BrowserStorageService from '../services/BrowserStorageService';
 
 import { Redirect } from 'react-router';
 
 import { connect } from 'react-redux';
 import { newIsBackButton, newIsSearchTextBox } from '../actions/toolbar';
-import { newShowLoginBox, newUser, newIsLogged } from '../actions/user';
+import { newShowLoginBox, newUser, newIsLogged, newRememberMe } from '../actions/user';
 
 
 class PhoneDetail extends Component {
@@ -39,7 +39,6 @@ class PhoneDetail extends Component {
   async getPhoneFromAPI() {
     const currentPhoneId = this.props.match.params.id;
     const dataPhoneFromApi = await ApiPhoneService.getPhoneById(currentPhoneId);
-    console.log(dataPhoneFromApi)
     this.setState({
       phone: dataPhoneFromApi,
       color: dataPhoneFromApi.colors[0].idColorPhone,
@@ -51,19 +50,18 @@ class PhoneDetail extends Component {
 
   async purchasePhone() {
     const dataUserFromApi = await ApiPhoneService.purchasePhone(this.props.user.id_user, this.state.phone.id_phone,
-      this.state.version, this.state.color, sessionStorage.getItem('Token'));
-    console.log(dataUserFromApi)
-    console.log(sessionStorage.getItem('Token'))
+      this.state.version, this.state.color, BrowserStorageService.getToken(this.props.rememberMe));
 
-    if (dataUserFromApi) {
-      SaveOnBrowserStorageService.SaveUserOnBrowserStorage(dataUserFromApi)
+    if (dataUserFromApi) {//Purchase Success
+      BrowserStorageService.saveUserOnBrowserStorage(dataUserFromApi, this.props.rememberMe)
       this.props.newUser(dataUserFromApi)
 
       this.setState({ purchaseRedirect: true })
 
-    } else {
-      SaveOnBrowserStorageService.DeleteDataLogin()
+    } else {//Delete Data User
+      BrowserStorageService.deleteDataLogin(this.props.rememberMe)
 
+      this.props.newRememberMe(false)
       this.props.newIsLogged(false)
       this.props.newShowLoginBox(true)
     }
@@ -163,7 +161,8 @@ const mapStateToProps = state => ({
   isSearchTextBox: state.toolbar.isSearchTextBox,
   isLogged: state.user.isLogged,
   showLoginBox: state.user.showLoginBox,
-  user: state.user.user
+  user: state.user.user,
+  rememberMe: state.user.rememberMe
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -171,6 +170,7 @@ const mapDispatchToProps = dispatch => ({
   newIsSearchTextBox: (isSearchTextBox) => dispatch(newIsSearchTextBox(isSearchTextBox)),
   newShowLoginBox: (showLoginBox) => dispatch(newShowLoginBox(showLoginBox)),
   newIsLogged: (isLogged) => dispatch(newIsLogged(isLogged)),
+  newRememberMe: (rememberMe) => dispatch(newRememberMe(rememberMe)),
   newUser: (user) => dispatch(newUser(user))
 })
 

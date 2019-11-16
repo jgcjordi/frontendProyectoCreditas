@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './UserButton.css';
 
 import ApiPhoneService from '../services/ApiPhoneService';
-import SaveOnBrowserStorageService from '../services/SaveOnBrowserStorageService';
+import BrowserStorageService from '../services/BrowserStorageService';
 
 import { Redirect } from 'react-router';
 import { withRouter } from 'react-router-dom';
@@ -24,17 +24,33 @@ class UserButton extends Component {
             passwordTextBox: "",
             isEmailOrPasswordWrong: false
         };
+
+        this.shouldRememberLastUser()
     }
 
 
     ////////////////METHODS////////////
+
+    async shouldRememberLastUser() {
+        if (BrowserStorageService.ifExistTokenOnLocalStorage()) {
+            if (await ApiPhoneService.isValidToken(BrowserStorageService.getToken(true))) {
+                this.props.newUser(BrowserStorageService.getUser(true))
+                this.props.newIsLogged(true)
+                this.props.newRememberMe(true)
+            } else {
+                BrowserStorageService.deleteDataLogin(this.props.rememberMe)
+            }
+        }
+    }
+
+
     async trySignIn() {
         const dataUserFromApi = await ApiPhoneService.tryLogIn(this.state.emailTextBox, this.state.passwordTextBox);
         console.log(dataUserFromApi)
         if (dataUserFromApi) {
             this.props.newUser(dataUserFromApi)
-            SaveOnBrowserStorageService.SaveUserOnBrowserStorage(dataUserFromApi)
-            SaveOnBrowserStorageService.SaveTokenOnBrowserStorage(dataUserFromApi.password)
+            BrowserStorageService.saveUserOnBrowserStorage(dataUserFromApi, this.props.rememberMe)
+            BrowserStorageService.saveTokenOnBrowserStorage(dataUserFromApi.password, this.props.rememberMe)
 
             this.props.newIsLogged(true)
             this.props.newShowLoginBox(false)
@@ -42,7 +58,6 @@ class UserButton extends Component {
         } else {
             this.setState({ isEmailOrPasswordWrong: true })
         }
-
     }
 
 
@@ -70,10 +85,6 @@ class UserButton extends Component {
 
     onSignInClicked = () => {
         if (this.state.emailTextBox !== "" && this.state.passwordTextBox !== "") {
-            console.log(this.state.emailTextBox)
-            console.log(this.state.nameTextBox)
-            console.log(this.state.passwordTextBox)
-            console.log("Remember me:" + this.props.rememberMe)
             this.trySignIn()
         } else {
             this.setState({ isEmailOrPasswordWrong: true })

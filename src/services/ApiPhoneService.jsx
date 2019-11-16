@@ -71,6 +71,23 @@ class ApiPhoneService {
     else { return false }
   }
 
+  async isValidToken(token) {
+    let status = false
+    const options = {
+      headers: { 'Authorization': `${token}` }
+    };
+    await axios.get(
+      `${this.BASE_URL_USER}/logged/validToken`, options
+    ).then(response => {
+      if (response.status === 200) {
+        status = true
+      }
+    }).catch(error => {
+      //console.log(error)
+    });
+    return status
+  }
+
 }
 
 export default new ApiPhoneService();
