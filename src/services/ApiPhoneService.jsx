@@ -2,70 +2,76 @@ import axios from 'axios';
 
 class ApiPhoneService {
 
+  constructor() {
+    this.BASE_URL_PHONE = 'http://localhost:8080/api/v1/phone';
+    this.BASE_URL_USER = 'http://localhost:8080/api/v1/user';
+  }
+
   async getAllPhones() {
     const { data } = await axios.get(
-      `http://localhost:8080/api/v1/phone/all`,
+      `${this.BASE_URL_PHONE}/all`,
     );
     return data;
   }
 
   async getPhoneById(id) {
     const { data } = await axios.get(
-      `http://localhost:8080/api/v1/phone/${id}`,
+      `${this.BASE_URL_PHONE}/${id}`,
     );
     return data;
   }
 
   async getPhonesFilteredByKeywords(keywords) {
     const { data } = await axios.get(
-      `http://localhost:8080/api/v1/phone/phones?search=${keywords}`,
+      `${this.BASE_URL_PHONE}/phones?search=${keywords}`,
     );
     return data;
   }
-  
+
   async tryLogIn(email, password) {
-    let status = false
+    let status
     let userData
     await axios.post(
-      `http://localhost:8080/api/v1/user/login`,{
-        email: `${email}`,
-        password: `${password}`
-      }
+      `${this.BASE_URL_USER}/login`, {
+      email: `${email}`,
+      password: `${password}`
+    }
     ).then(response => {
-      if (response.status === 200){
+      if (response.status === 200) {
         status = true
         userData = response.data
       }
-    });
-    if(status){return userData}
-    else{return false}
+    }).catch(response => {status = false});
+    if (status) { return userData }
+    else { return false }
   }
 
   async purchasePhone(idUser, idPhone, idVersion, idColor, token) {
     let status = false
     let userData
     const options = {
-      headers: {'Authorization': `${token}`}
+      headers: { 'Authorization': `${token}` }
     };
     await axios.post(
-      `http://localhost:8080/api/v1/user/logged/purchase`,{
-        id_user: `${idUser}`,
-        idLastPhonePurchased: `${idPhone}`,
-        idLastPhonePurchasedVersion: `${idVersion}`,
-        idLastPhonePurchasedColor: `${idColor}`
-      },options
+      `${this.BASE_URL_USER}/logged/purchase`, {
+      id_user: `${idUser}`,
+      idLastPhonePurchased: `${idPhone}`,
+      idLastPhonePurchasedVersion: `${idVersion}`,
+      idLastPhonePurchasedColor: `${idColor}`
+    }, options
     ).then(response => {
-      if (response.status === 200){
+      if (response.status === 200) {
         status = true
         userData = response.data
       }
     }).catch(error => {
       //console.log(error)
     });
-    if(status){return userData}
-    else{return false}
+    if (status) { return userData }
+    else { return false }
   }
 
 }
 
 export default new ApiPhoneService();
+

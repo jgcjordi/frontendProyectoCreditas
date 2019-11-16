@@ -6,31 +6,6 @@ export const newShowLoginBox =
         }
     })
 
-export const newEmailTextBox =
-    (emailTextBox) => ({
-        type: 'NEW_EMAIL_TEXT_BOX',
-        payload: {
-            emailTextBox,
-        }
-    })
-
-export const newNameTextBox =
-    (nameTextBox) => ({
-        type: 'NEW_NAME_TEXT_BOX',
-        payload: {
-            nameTextBox,
-        }
-    })
-
-
-export const newPasswordTextBox =
-    (passwordTextBox) => ({
-        type: 'NEW_PASSWORD_TEXT_BOX',
-        payload: {
-            passwordTextBox,
-        }
-    })
-
 export const newRememberMe =
     (rememberMe) => ({
         type: 'NEW_REMEMBER_ME',

@@ -2,9 +2,6 @@ const INITIAL_STATE = {
     showLoginBox: false,
     isLogged: false,
     rememberMe: false,
-    emailTextBox: "",
-    passwordTextBox: "",
-    nameTextBox: "",
     user: [],
     lastPurchaseRedirect: false
 }
@@ -16,21 +13,6 @@ const user = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 showLoginBox: action.payload.showLoginBox,
-            }
-        case 'NEW_EMAIL_TEXT_BOX':
-            return {
-                ...state,
-                emailTextBox: action.payload.emailTextBox,
-            }
-        case 'NEW_NAME_TEXT_BOX':
-            return {
-                ...state,
-                nameTextBox: action.payload.nameTextBox,
-            }
-        case 'NEW_PASSWORD_TEXT_BOX':
-            return {
-                ...state,
-                passwordTextBox: action.payload.passwordTextBox,
             }
         case 'NEW_REMEMBER_ME':
             return {

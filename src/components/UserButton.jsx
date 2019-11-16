@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './UserButton.css';
 
 import ApiPhoneService from '../services/ApiPhoneService';
+import SaveOnBrowserStorageService from '../services/SaveOnBrowserStorageService';
 
 import { Redirect } from 'react-router';
 import { withRouter } from 'react-router-dom';
@@ -32,8 +33,9 @@ class UserButton extends Component {
         console.log(dataUserFromApi)
         if (dataUserFromApi) {
             this.props.newUser(dataUserFromApi)
-            sessionStorage.setItem('User', JSON.stringify(dataUserFromApi));
-            sessionStorage.setItem('Token', dataUserFromApi.password);
+            SaveOnBrowserStorageService.SaveUserOnBrowserStorage(dataUserFromApi)
+            SaveOnBrowserStorageService.SaveTokenOnBrowserStorage(dataUserFromApi.password)
+
             this.props.newIsLogged(true)
             this.props.newShowLoginBox(false)
             this.setState({ isEmailOrPasswordWrong: false })

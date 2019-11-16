@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ApiPhoneService from '../services/ApiPhoneService';
+import SaveOnBrowserStorageService from '../services/SaveOnBrowserStorageService';
 
 import { Redirect } from 'react-router';
 
@@ -52,14 +53,17 @@ class PhoneDetail extends Component {
     const dataUserFromApi = await ApiPhoneService.purchasePhone(this.props.user.id_user, this.state.phone.id_phone,
       this.state.version, this.state.color, sessionStorage.getItem('Token'));
     console.log(dataUserFromApi)
+    console.log(sessionStorage.getItem('Token'))
+
     if (dataUserFromApi) {
-      sessionStorage.setItem('User', JSON.stringify(dataUserFromApi));
+      SaveOnBrowserStorageService.SaveUserOnBrowserStorage(dataUserFromApi)
       this.props.newUser(dataUserFromApi)
+
       this.setState({ purchaseRedirect: true })
-    } else {//"It Cant Purchased, try login again"
-      console.log("It Cant Purchased")
-      localStorage.removeItem('User');
-      localStorage.removeItem('Token');
+
+    } else {
+      SaveOnBrowserStorageService.DeleteDataLogin()
+
       this.props.newIsLogged(false)
       this.props.newShowLoginBox(true)
     }
