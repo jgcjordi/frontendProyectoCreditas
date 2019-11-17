@@ -43,7 +43,6 @@ class UserButton extends Component {
         }
     }
 
-
     async trySignIn() {
         const dataUserFromApi = await ApiPhoneService.tryLogIn(this.state.emailTextBox, this.state.passwordTextBox);
         console.log(dataUserFromApi)
@@ -60,16 +59,28 @@ class UserButton extends Component {
         }
     }
 
+    async userStillLoggedShowPurchase() {
+        if (await ApiPhoneService.isValidToken(BrowserStorageService.getToken(this.props.rememberMe))) {
+            if (this.props.user.idLastPhonePurchased === -1) {
+                console.log("Yo haven't bought any phone yet")
+            } else {
+                this.props.newLastPurchaseRedirect(true)
+            }
+        } else {
+            BrowserStorageService.deleteDataLogin(this.props.rememberMe)
+            this.props.newRememberMe(false)
+            this.props.newIsLogged(false)
+            this.props.newShowLoginBox(true)
+        }
+
+    }
+
 
     ////////////////LISTENERS////////////
     onUserClicked = () => {
         if (this.props.isLogged) {
             if (this.props.location.pathname !== "/purchased") {
-                if (this.props.user.idLastPhonePurchased === -1) {
-                    console.log("Yo haven't bought any phone yet")
-                } else {
-                    this.props.newLastPurchaseRedirect(true)
-                }
+                this.userStillLoggedShowPurchase()
             } else {
                 console.log("Here te button User dont show nothing")
             }
