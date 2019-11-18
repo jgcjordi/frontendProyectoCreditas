@@ -79,6 +79,9 @@ class PhonePurchased extends Component {
   }
 }
 
+
+  ////////////////REDUX////////////
+
 const mapStateToProps = state => ({
   isBackButton: state.toolbar.isBackButton,
   isSearchTextBox: state.toolbar.isSearchTextBox,

@@ -171,6 +171,8 @@ class UserButton extends Component {
 
 
 
+  ////////////////REDUX////////////
+
 const mapStateToProps = state => ({
     showLoginBox: state.user.showLoginBox,
     isLogged: state.user.isLogged,

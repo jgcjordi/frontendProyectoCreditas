@@ -1,5 +1,7 @@
 const INITIAL_STATE = {
-    phonesJSON: []
+    phonesJSON: [],
+    isBarPagesVisible: true,
+    activePage: 1
 }
 
 /////REDUCER WITH HIS ACTIONS/////
@@ -9,6 +11,16 @@ const phones = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 phonesJSON: action.payload.phonesJSON,
+            }
+        case 'NEW_IS_BAR_PAGES_VISIBLE':
+            return {
+                ...state,
+                isBarPagesVisible: action.payload.isBarPagesVisible,
+            }
+        case 'NEW_ACTIVE_PAGE':
+            return {
+                ...state,
+                activePage: action.payload.activePage,
             }
 
         default:

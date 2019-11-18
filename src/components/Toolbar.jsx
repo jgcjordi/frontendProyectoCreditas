@@ -2,7 +2,9 @@ import React from 'react';
 import BackButton from './BackButton';
 import SearcherTextBox from './SearcherTextBox';
 import UserButton from './UserButton';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
+import './Toolbar.css';
+
 
 
 function Toolbar(props) {

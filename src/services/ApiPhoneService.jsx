@@ -7,9 +7,16 @@ class ApiPhoneService {
     this.BASE_URL_USER = 'http://localhost:8080/api/v1/user';
   }
 
-  async getAllPhones() {
+  async getAllPhones() {//I'm not using this method
     const { data } = await axios.get(
       `${this.BASE_URL_PHONE}/all`,
+    );
+    return data;
+  }
+
+  async getAllPhonesPaged(page) {
+    const { data } = await axios.get(
+      `${this.BASE_URL_PHONE}/allPaginated/${page}`,
     );
     return data;
   }
