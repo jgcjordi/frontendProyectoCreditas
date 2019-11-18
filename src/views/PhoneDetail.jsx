@@ -8,6 +8,9 @@ import { connect } from 'react-redux';
 import { newIsBackButton, newIsSearchTextBox } from '../actions/toolbar';
 import { newShowLoginBox, newUser, newIsLogged, newRememberMe } from '../actions/user';
 
+import './PhoneDetail.scss';
+
+
 
 class PhoneDetail extends Component {
 
@@ -131,26 +134,33 @@ class PhoneDetail extends Component {
 
     return (
       <div className='PhoneDetail'>
-        <img className="img-phone" style={{ height: "30rem" }} src={this.state.phone.src} alt="Phone" />
+        <div className='image-forms'>
+          <div className='image-model-price'>
+            <img className="img-phone" style={{ height: "30rem" }} src={this.state.phone.src} alt="Phone" />
+            <div className='model-price'>
+              <div className='model'>{`${this.state.phone.brand} ${this.state.phone.model}`}</div>
+              <div className='model-price'>{`${this.state.price}€`}</div>
+            </div>
+          </div>
 
-        <div className="model-phone">{`${this.state.phone.brand} ${this.state.phone.model}`}</div>
-        <div className="model-phone">{`${this.state.price}€`}</div>
+          <form>
+            <div>Color</div>
+            {this.fillColorRadioButtons()}
+          </form>
 
-        <div className="data-phone">{this.state.phone.data}</div>
+          <form action="">
+            <div>RAM · Storage</div>
+            {this.fillVersionRadioButtons()}
+          </form>
 
-        <form>
-          <div>Color</div>
-          {this.fillColorRadioButtons()}
-        </form>
+        </div>
 
-        <form action="">
-          <div>RAM · Storage</div>
-          {this.fillVersionRadioButtons()}
-        </form>
+        <div className="data-purchase-btn" >
+          <div className="data">{this.state.phone.data}</div>
 
-        <button className="btn" type="button" onClick={this.onPurchaseButtonClicked} >Purchase</button>
+          <button className="purchase-button" type="button" onClick={this.onPurchaseButtonClicked} >Purchase</button>
+        </div>
         {this.state.purchaseRedirect && <Redirect push to="/purchased" />}
-
       </div >
     );
   }
@@ -158,7 +168,7 @@ class PhoneDetail extends Component {
 
 
 
-  ////////////////REDUX////////////
+////////////////REDUX////////////
 
 const mapStateToProps = state => ({
   isBackButton: state.toolbar.isBackButton,

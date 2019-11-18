@@ -1,0 +1,23 @@
+.PhoneDetail {
+    padding: 1.5rem;
+    .image-forms {
+        display: grid;
+        grid-template-columns: 50vw 25vw 25vw;
+        padding-bottom: 2rem;
+        .model-price {
+            display: flex;
+            justify-content: center;
+            .model {
+                padding-right: 1rem;
+            }
+        }
+    }
+    .data-purchase-btn {
+        display: grid;
+        grid-template-columns: 50vw 50vw;
+        .data {
+            padding-right: 1rem;
+        }
+        .purchase-button {}
+    }
+}
