@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import theme from './assets/styles/theme.js';
+import { ThemeProvider } from '@material-ui/core/styles';
 
 
 //Redux for React
@@ -16,7 +18,9 @@ const store = createStore(RootReducers, applyMiddleware(thunk));
 
 ReactDOM.render(
     <Provider store={store}>
+        <ThemeProvider theme={theme}>
         <App />
+        </ThemeProvider>
     </Provider>,
     document.getElementById('root'));
 

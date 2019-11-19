@@ -9,6 +9,8 @@ import PhoneDetail from './views/PhoneDetail';
 import NotFound from './views/NotFound';
 import PhonePurchased from './views/PhonePurchased';
 import Footer from './components/Footer';
+import AppBar from '@material-ui/core/AppBar';
+
 
 
 
@@ -17,7 +19,9 @@ function App() {
   return (
     <div className="App">
       <HashRouter basename='/'>
-        <Toolbar/>
+        <AppBar position="static">
+          <Toolbar />
+        </AppBar>
         <Switch>
           <Route path="/phones" exact component={PhonesAll} />
           <Route path="/phone/:id" exact component={PhoneDetail} />
@@ -25,7 +29,7 @@ function App() {
           <Redirect path='/' to='phones' />
           <Route component={NotFound} />
         </Switch>
-        <Footer/>
+        <Footer />
       </HashRouter>
     </div>
   );

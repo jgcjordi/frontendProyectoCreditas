@@ -136,10 +136,10 @@ class PhoneDetail extends Component {
       <div className='PhoneDetail'>
         <div className='image-forms'>
           <div className='image-model-price'>
-            <img className="img-phone" style={{ height: "30rem" }} src={this.state.phone.src} alt="Phone" />
+            <img className="img-phone" src={this.state.phone.src} alt="Phone" />
             <div className='model-price'>
               <div className='model'>{`${this.state.phone.brand} ${this.state.phone.model}`}</div>
-              <div className='model-price'>{`${this.state.price}€`}</div>
+              <div className='price'>{`${this.state.price}€`}</div>
             </div>
           </div>
 
@@ -157,8 +157,9 @@ class PhoneDetail extends Component {
 
         <div className="data-purchase-btn" >
           <div className="data">{this.state.phone.data}</div>
-
-          <button className="purchase-button" type="button" onClick={this.onPurchaseButtonClicked} >Purchase</button>
+          <div>
+            <button className="purchase-button" type="button" onClick={this.onPurchaseButtonClicked} >Purchase</button>
+          </div>
         </div>
         {this.state.purchaseRedirect && <Redirect push to="/purchased" />}
       </div >

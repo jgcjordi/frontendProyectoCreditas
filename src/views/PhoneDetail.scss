@@ -1,9 +1,13 @@
 .PhoneDetail {
+    width: 1fr;
     padding: 1.5rem;
     .image-forms {
         display: grid;
-        grid-template-columns: 50vw 25vw 25vw;
+        grid-template-columns: 2fr 1fr 1fr;
         padding-bottom: 2rem;
+        .img-phone {
+            height: 25rem;
+        }
         .model-price {
             display: flex;
             justify-content: center;
@@ -14,10 +18,13 @@
     }
     .data-purchase-btn {
         display: grid;
-        grid-template-columns: 50vw 50vw;
+        grid-template-columns: 1fr 1fr;
         .data {
             padding-right: 1rem;
         }
-        .purchase-button {}
+        .purchase-button {
+            height: 3rem;
+            width: 100%;
+        }
     }
 }

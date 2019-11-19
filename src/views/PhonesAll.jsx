@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ApiPhoneService from '../services/ApiPhoneService';
 import { Link } from 'react-router-dom';
 import CardPhone from '../components/CardPhone';
-import './PhonesAll.css';
+import './PhonesAll.scss';
 
 
 import { connect } from 'react-redux';

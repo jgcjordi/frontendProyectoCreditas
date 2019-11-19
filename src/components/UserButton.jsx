@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import './UserButton.css';
 
+import LoginDialog from './LoginDialog';
+
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import IconButton from '@material-ui/core/IconButton';
+
 import ApiPhoneService from '../services/ApiPhoneService';
 import BrowserStorageService from '../services/BrowserStorageService';
 
 import { Redirect } from 'react-router';
 import { withRouter } from 'react-router-dom';
-
 import { connect } from 'react-redux';
 import {
     newShowLoginBox, newRememberMe,
@@ -14,17 +18,12 @@ import {
 } from '../actions/user';
 
 
+
+
 class UserButton extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            emailTextBox: "",
-            nameTextBox: "",
-            passwordTextBox: "",
-            isEmailOrPasswordWrong: false
-        };
-
         this.shouldRememberLastUser()
     }
 
@@ -40,22 +39,6 @@ class UserButton extends Component {
             } else {
                 BrowserStorageService.deleteDataLogin(this.props.rememberMe)
             }
-        }
-    }
-
-    async trySignIn() {
-        const dataUserFromApi = await ApiPhoneService.tryLogIn(this.state.emailTextBox, this.state.passwordTextBox);
-        console.log(dataUserFromApi)
-        if (dataUserFromApi) {
-            this.props.newUser(dataUserFromApi)
-            BrowserStorageService.saveUserOnBrowserStorage(dataUserFromApi, this.props.rememberMe)
-            BrowserStorageService.saveTokenOnBrowserStorage(dataUserFromApi.password, this.props.rememberMe)
-
-            this.props.newIsLogged(true)
-            this.props.newShowLoginBox(false)
-            this.setState({ isEmailOrPasswordWrong: false })
-        } else {
-            this.setState({ isEmailOrPasswordWrong: true })
         }
     }
 
@@ -89,79 +72,20 @@ class UserButton extends Component {
         }
     }
 
-    onRememberMeChange = () => {
-        let aux = !this.props.rememberMe
-        this.props.newRememberMe(aux)
-    }
-
-    onSignInClicked = () => {
-        if (this.state.emailTextBox !== "" && this.state.passwordTextBox !== "") {
-            this.trySignIn()
-        } else {
-            this.setState({ isEmailOrPasswordWrong: true })
-        }
-
-    }
-
-    onBackgroundCoverClick = () => {
-        this.props.newShowLoginBox(false)
-        this.setState({ isEmailOrPasswordWrong: false })
-    }
-
-
-    ////////////////RENDER////////////
-
-    showLoginPopup() {
-        if (this.props.showLoginBox) {
-            return (
-                <div className="popupLogin">
-                    <div className="backgroundCover" onClick={this.onBackgroundCoverClick}></div>
-                    <div className="boxLogin">
-                        <form>
-                            <div>Login</div>
-                            <input
-                                className="textBoxLogin"
-                                type="text"
-                                placeholder="Email"
-                                onChange={(ev) => this.setState({ emailTextBox: ev.target.value })}
-                                value={this.state.emailTextBox}
-                                onKeyDown={(ev) => ev.key === 'Enter' && this.onSignInClicked()}
-                            />
-                            <input
-                                className="textBoxLogin"
-                                type="text"
-                                placeholder="Name"
-                                onChange={(ev) => this.setState({ nameTextBox: ev.target.value })}
-                                value={this.state.nameTextBox}
-                                onKeyDown={(ev) => ev.key === 'Enter' && this.onSignInClicked()}
-                            />
-                            <input
-                                className="textBoxLogin"
-                                type="password"
-                                placeholder="Password"
-                                onChange={(ev) => this.setState({ passwordTextBox: ev.target.value })}
-                                value={this.state.passwordTextBox}
-                                onKeyDown={(ev) => ev.key === 'Enter' && this.onSignInClicked()}
-                            />
-                        </form>
-                        <input type="checkbox" name="rememberMe" onChange={this.onRememberMeChange} defaultChecked={this.props.rememberMe} />Remember me
-                        <br />
-                        <button className="buttonSignIn" type="button" onClick={this.onSignInClicked}>Sign In</button>
-                        {this.state.isEmailOrPasswordWrong &&
-                            <h6>Email or password is wrong</h6>}
-                    </div>
-                </div>)
-        }
-    }
-
-
     render() {
         return (
             <div className="UserButton">
-                <div>
-                    <button className="button" type="button" onClick={this.onUserClicked}>User</button>
-                </div>
-                {this.showLoginPopup()}
+                <IconButton
+                    aria-label="account of current user"
+                    aria-controls="menu-appbar"
+                    aria-haspopup="true"
+                    onClick={this.onUserClicked}
+                    color="inherit"
+                    size="small"
+                >
+                    <AccountCircle style={{ fontSize: 45 }} />
+                </IconButton>
+                <LoginDialog/>
                 {this.props.lastPurchaseRedirect && <Redirect push to="/purchased" />}
             </div>
         );
@@ -171,7 +95,7 @@ class UserButton extends Component {
 
 
 
-  ////////////////REDUX////////////
+////////////////REDUX////////////
 
 const mapStateToProps = state => ({
     showLoginBox: state.user.showLoginBox,
@@ -182,9 +106,9 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    newRememberMe: (rememberMe) => dispatch(newRememberMe(rememberMe)),
-    newIsLogged: (isLogged) => dispatch(newIsLogged(isLogged)),
     newShowLoginBox: (showLoginBox) => dispatch(newShowLoginBox(showLoginBox)),
+    newIsLogged: (isLogged) => dispatch(newIsLogged(isLogged)),
+    newRememberMe: (rememberMe) => dispatch(newRememberMe(rememberMe)),
     newUser: (user) => dispatch(newUser(user)),
     newLastPurchaseRedirect: (lastPurchaseRedirect) => dispatch(newLastPurchaseRedirect(lastPurchaseRedirect))
 })

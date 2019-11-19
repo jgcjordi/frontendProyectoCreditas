@@ -29,7 +29,7 @@ function SearcherTextBox(props) {
 
 
     return (
-        <div className="SearcherTextBox">
+        <div className="SearcherTextBox" style={{visibility: props.visibility}}>
             <input
                 className="textBoxSearch"
                 type="text"

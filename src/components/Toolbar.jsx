@@ -3,7 +3,8 @@ import BackButton from './BackButton';
 import SearcherTextBox from './SearcherTextBox';
 import UserButton from './UserButton';
 import {connect} from 'react-redux';
-import './Toolbar.css';
+import './Toolbar.scss';
+
 
 
 
@@ -11,8 +12,8 @@ function Toolbar(props) {
 
   return (
     <div className="Toolbar">
-        {props.isBackButton && <BackButton/>}
-        {props.isSearchTextBox && <SearcherTextBox/>}
+        <BackButton visibility={props.isBackButton ? 'visible' : 'hidden' }/>
+        <SearcherTextBox visibility={props.isSearchTextBox ? 'visible' : 'hidden' }/>
         <UserButton/>
     </div>
   );
