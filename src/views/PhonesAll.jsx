@@ -58,9 +58,13 @@ class PhonesAll extends Component {
             <div className="PhonesAll">
                 <div className='phonesList'>
                     {this.props.phonesJSON.map(phone => (
-                        <Link to={'/phone/' + phone.id_phone} key={phone.id_phone}>
-                            <CardPhone phone={phone} key={phone.id_phone} />
-                        </Link>
+                        <div key={phone.id_phone}>
+                            <div className='phoneCardLink'>
+                                <Link to={'/phone/' + phone.id_phone} key={phone.id_phone} style={{textDecoration: "none"}}>
+                                    <CardPhone phone={phone} key={phone.id_phone} />
+                                </Link>
+                            </div>
+                        </div>
                     ))}
                 </div>
                 {this.props.isBarPagesVisible &&

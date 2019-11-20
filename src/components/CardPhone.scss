@@ -1,0 +1,48 @@
+.CardPhone {
+    color: black;
+    background-color: white;
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    border-radius: 6px;
+    padding: 0.5rem;
+    width: 12rem;
+    &:hover {
+        transition: transform 0.3s;
+        transform: scale(1.15);
+        z-index: 1;
+    }
+    .imagePhone {
+        height: 12rem;
+    }
+    .body-card {
+        height: 5rem;
+        .brand-model {
+            display: flex;
+            justify-content: center;
+            .brand {
+                font-weight: bold;
+                padding-right: 0.25rem;
+                text-transform: uppercase;
+            }
+            .model {}
+        }
+        .price {
+            padding-top: 0.25rem;
+            padding-bottom: 0.1rem;
+            font-size: 1.5rem;
+            font-weight: 900;
+        }
+        .seeProduct {
+            padding-top: 0.2rem;
+            padding-bottom: 0.2rem;
+            font-size: 1.5rem;
+            font-weight: 900;
+            background-color: orange;
+            border-radius: 6px;
+            visibility: hidden;
+        }
+    }
+}
+
+.CardPhone:hover .seeProduct {
+    visibility: visible;
+}

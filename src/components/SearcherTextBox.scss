@@ -14,7 +14,6 @@
             @media (min-width: 576px) {
                 width: 50%;
                 &:focus-within {
-                    -webkit-transition: width 0.5s;
                     transition: width 0.5s;
                     width: 65%;
                 }
