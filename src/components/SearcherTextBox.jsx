@@ -6,18 +6,21 @@ import { connect } from 'react-redux';
 import { newPhoneSearchText } from '../actions/toolbar';
 import { newPhonesJSON, newIsBarPagesVisible, newActivePage } from '../actions/phones';
 
+import SearchIcon from '@material-ui/icons/Search';
+import './SearcherTextBox.scss';
+
 
 
 function SearcherTextBox(props) {
 
     const getDataPhonesFilteredByKeywords = async () => {
-        if(props.phoneSearchText === ""){
+        if (props.phoneSearchText === "") {
             const dataPhonesFromApi = await ApiPhoneService.getAllPhonesPaged(0);
             console.log(dataPhonesFromApi)
             props.newPhonesJSON(dataPhonesFromApi.phoneList)
             props.newIsBarPagesVisible(true)
             props.newActivePage(1)
-        }else{
+        } else {
             const dataPhonesFromApi = await ApiPhoneService.getPhonesFilteredByKeywords(props.phoneSearchText);
             console.log(dataPhonesFromApi)
             props.newPhonesJSON(dataPhonesFromApi)
@@ -29,16 +32,19 @@ function SearcherTextBox(props) {
 
 
     return (
-        <div className="SearcherTextBox" style={{visibility: props.visibility}}>
+        <div className="SearcherTextBox" style={{ visibility: props.visibility }}>
+                <div className="searchIcon">
+                    <SearchIcon />
+                </div>
             <input
                 className="textBoxSearch"
                 type="text"
-                placeholder="Mobile Phone"
+                placeholder="Mobile Phone..."
                 onChange={(ev) => props.newPhoneSearchText(ev.target.value)}
                 onKeyDown={(ev) => ev.key === 'Enter' && getDataPhonesFilteredByKeywords()}
                 value={props.phoneSearchText}
             />
-            <button className="buttonSearch" onClick={getDataPhonesFilteredByKeywords}>Search</button>
+            {/* <button className="buttonSearch" onClick={getDataPhonesFilteredByKeywords}>Search</button> */}
         </div>
     );
 }

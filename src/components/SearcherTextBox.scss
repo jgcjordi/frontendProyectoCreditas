@@ -1,0 +1,40 @@
+        @import '../assets/styles/colors.scss';
+        .SearcherTextBox {
+            align-self: center;
+            justify-self: center;
+            display: flex;
+            border-radius: 0.25rem;
+            //$light-primary-color
+            background-color: #B3E5FCB3;
+            &:hover {
+                background-color: #B3E5FCD9;
+            }
+            width: 95%;
+            height: 55%;
+            @media (min-width: 576px) {
+                width: 50%;
+                &:focus-within {
+                    -webkit-transition: width 0.5s;
+                    transition: width 0.5s;
+                    width: 65%;
+                }
+            }
+            .textBoxSearch {
+                background: transparent;
+                border: none;
+                width: 100%;
+                padding-left: 0.5rem;
+            }
+            .searchIcon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                pointer-events: none;
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+            .MuiSvgIcon-root {
+                font-size: 1.9rem;
+            }
+        }

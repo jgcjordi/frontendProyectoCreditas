@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './UserButton.css';
 
 import LoginDialog from './LoginDialog';
 
@@ -16,6 +15,8 @@ import {
     newShowLoginBox, newRememberMe,
     newIsLogged, newUser, newLastPurchaseRedirect
 } from '../actions/user';
+
+import './UserButton.scss';
 
 
 
@@ -76,6 +77,7 @@ class UserButton extends Component {
         return (
             <div className="UserButton">
                 <IconButton
+                    className="userIcon"
                     aria-label="account of current user"
                     aria-controls="menu-appbar"
                     aria-haspopup="true"
@@ -83,9 +85,10 @@ class UserButton extends Component {
                     color="inherit"
                     size="small"
                 >
-                    <AccountCircle style={{ fontSize: 45 }} />
+                    
+                <AccountCircle  />
                 </IconButton>
-                <LoginDialog/>
+                <LoginDialog />
                 {this.props.lastPurchaseRedirect && <Redirect push to="/purchased" />}
             </div>
         );

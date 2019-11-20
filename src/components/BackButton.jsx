@@ -9,8 +9,8 @@ function BackButton(props) {
 
   return (
     <div className="BackButton" style={{visibility: props.visibility}}>
-      <IconButton edge="center" color="inherit" onClick={() => props.history.goBack()}>
-            <MenuIcon color="secondary"/>
+      <IconButton edge="false" color="inherit" onClick={() => props.history.goBack()}>
+            <MenuIcon color="inherit"/>
       </IconButton>
     </div>
   );
