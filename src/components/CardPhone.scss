@@ -1,40 +1,51 @@
 .CardPhone {
+    @media (min-width: 768px) {
+        font-size: 0.9rem;
+    }
+    @media (min-width: 992px) {
+        font-size: 0.7rem;
+    }
+    @media (min-width: 1200px) {
+        font-size: 0.8rem;
+    }
     color: black;
     background-color: white;
-    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.12);
     border-radius: 6px;
-    padding: 0.5rem;
-    width: 12rem;
+    padding: 0.5em;
+    width: 12em;
     &:hover {
         transition: transform 0.3s;
-        transform: scale(1.15);
+        transform: scale(1.10);
         z-index: 1;
     }
     .imagePhone {
-        height: 12rem;
+        height: 12em;
     }
     .body-card {
-        height: 5rem;
+        height: 5em;
         .brand-model {
             display: flex;
             justify-content: center;
             .brand {
                 font-weight: bold;
-                padding-right: 0.25rem;
+                padding-right: 0.25em;
                 text-transform: uppercase;
             }
             .model {}
         }
         .price {
-            padding-top: 0.25rem;
-            padding-bottom: 0.1rem;
-            font-size: 1.5rem;
+            padding-top: 0.10em;
+            padding-bottom: 0.1em;
+            font-size: 1.5em;
             font-weight: 900;
         }
         .seeProduct {
-            padding-top: 0.2rem;
-            padding-bottom: 0.2rem;
-            font-size: 1.5rem;
+            padding-top: 0.2em;
+            padding-bottom: 0.2em;
+            font-size: 1.4em;
             font-weight: 900;
             background-color: orange;
             border-radius: 6px;
