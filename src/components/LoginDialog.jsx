@@ -115,7 +115,7 @@ class LoginDialog extends Component {
                                 <Checkbox
                                     checked={this.props.rememberMe}
                                     onChange={this.onRememberMeChange}
-                                    color="primary"
+                                    color="secondary"
                                     inputProps={{
                                         'aria-label': 'checkbox remember-me',
                                     }}

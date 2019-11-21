@@ -1,6 +1,12 @@
 .Toolbar {
     display: grid;
-    grid-template-columns: 0fr 1fr 0fr;
+    grid-template-columns: 0fr 0fr 1fr 0fr;
     align-items: center;
-    padding: 0.5rem 1rem 0.5rem 1rem
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    .logo {
+        height: 3rem;
+        border-radius: 1rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
 }

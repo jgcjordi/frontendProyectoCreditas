@@ -28,7 +28,7 @@ class PhonesAll extends Component {
 
 
         //this.getDataAllPhonesFromAPI()
-        this.getPhonesPagedFromAPI(0)
+        this.getPhonesPagedFromAPI(this.props.activePage-1)
 
     }
 
