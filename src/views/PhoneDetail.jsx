@@ -10,6 +10,10 @@ import { newShowLoginBox, newUser, newIsLogged, newRememberMe } from '../actions
 
 import './PhoneDetail.scss';
 
+import Radio from '@material-ui/core/Radio';
+import Fab from '@material-ui/core/Fab';
+
+
 
 
 class PhoneDetail extends Component {
@@ -103,13 +107,19 @@ class PhoneDetail extends Component {
 
   ////////////////RENDER////////////
 
+
   fillColorRadioButtons() {
     if (this.state.phone.colors !== undefined) {
       return this.state.phone.colors.map(color => (
         <div key={color.idColorPhone}>
-          <input type="radio" name="color" value={color.idColorPhone}
+          <Radio
             checked={this.state.color === color.idColorPhone}
-            onChange={this.onRadioButtonColorChange} />
+            color="secondary"
+            onChange={this.onRadioButtonColorChange}
+            value={color.idColorPhone}
+            name="color"
+            inputProps={{ 'aria-label': 'color' }}
+          />
           {color.color}
         </div>
       ))
@@ -121,14 +131,20 @@ class PhoneDetail extends Component {
     if (this.state.phone.versions !== undefined) {
       return this.state.phone.versions.map(version => (
         <div key={version.id_version_phone}>
-          <input type="radio" name="version" value={version.id_version_phone}
+          <Radio
             checked={this.state.version === version.id_version_phone}
-            onChange={this.onRadioButtonVersionChange} />
+            color="secondary"
+            onChange={this.onRadioButtonVersionChange}
+            value={version.id_version_phone}
+            name="version"
+            inputProps={{ 'aria-label': 'version' }}
+          />
           {`${version.ram} GB · ${version.storage} GB`}
         </div>
       ))
     }
   }
+
 
   render() {
 
@@ -144,12 +160,12 @@ class PhoneDetail extends Component {
           </div>
 
           <form>
-            <div>Color</div>
+            <div className="title-version">Color</div>
             {this.fillColorRadioButtons()}
           </form>
 
-          <form action="">
-            <div>RAM · Storage</div>
+          <form>
+            <div className="title-version">RAM · Storage</div>
             {this.fillVersionRadioButtons()}
           </form>
 
@@ -157,8 +173,18 @@ class PhoneDetail extends Component {
 
         <div className="data-purchase-btn" >
           <div className="data">{this.state.phone.data}</div>
-          <div>
-            <button className="purchase-button" type="button" onClick={this.onPurchaseButtonClicked} >Purchase</button>
+          <div className="btn-container">
+            <Fab
+              variant="extended"
+              size="large"
+              color="secondary"
+              aria-label="purchase"
+              className="purchase-button"
+              onClick={this.onPurchaseButtonClicked}
+            >
+              <span className="text-name">PURCHASE</span>
+
+            </Fab>
           </div>
         </div>
         {this.state.purchaseRedirect && <Redirect push to="/purchased" />}
