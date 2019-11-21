@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import Dialog from '@material-ui/core/Dialog';
-
 import ApiPhoneService from '../services/ApiPhoneService';
 import BrowserStorageService from '../services/BrowserStorageService';
 
@@ -10,6 +8,14 @@ import {
     newShowLoginBox, newRememberMe,
     newIsLogged, newUser
 } from '../actions/user';
+
+import Dialog from '@material-ui/core/Dialog';
+import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
+import './LoginDialog.scss';
+
+
+
 
 
 
@@ -75,10 +81,10 @@ class LoginDialog extends Component {
     render() {
         return (
             <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" open={this.props.showLoginBox}>
-                <div className="popupLogin">
+                <div className="LoginDialog">
                     <div className="boxLogin">
-                        <form>
-                            <div>Login</div>
+                        <form className="login-form">
+                            <div className="login-title">Login</div>
                             <input
                                 className="textBoxLogin"
                                 type="text"
@@ -104,9 +110,22 @@ class LoginDialog extends Component {
                                 onKeyDown={(ev) => ev.key === 'Enter' && this.onSignInClicked()}
                             />
                         </form>
-                        <input type="checkbox" name="rememberMe" onChange={this.onRememberMeChange} defaultChecked={this.props.rememberMe} />Remember me
-                        <br />
-                        <button className="buttonSignIn" type="button" onClick={this.onSignInClicked}>Sign In</button>
+                        <div className="sign-in">
+                            <div>
+                                <Checkbox
+                                    checked={this.props.rememberMe}
+                                    onChange={this.onRememberMeChange}
+                                    color="primary"
+                                    inputProps={{
+                                        'aria-label': 'checkbox remember-me',
+                                    }}
+                                />
+                                Remember me
+                            </div>
+                            <Button variant="contained" color="primary" className="buttonSignIn" onClick={this.onSignInClicked}>
+                                Sing in
+                            </Button>
+                        </div>
                         {this.state.isEmailOrPasswordWrong &&
                             <h6>Email or password is wrong</h6>}
                     </div>
