@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import LoginDialog from './LoginDialog';
+import SnackBarTimer from './SnackbarTimer';
 
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import IconButton from '@material-ui/core/IconButton';
@@ -21,12 +22,17 @@ import './UserButton.scss';
 
 
 
+
 class UserButton extends Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            showSnackBar: false,
+        };
         this.shouldRememberLastUser()
-        
+
     }
 
 
@@ -41,7 +47,7 @@ class UserButton extends Component {
             } else {
                 BrowserStorageService.deleteDataLogin(true)
             }
-        }else if(BrowserStorageService.ifExistTokenOnSessionStorage()){
+        } else if (BrowserStorageService.ifExistTokenOnSessionStorage()) {
             if (await ApiPhoneService.isValidToken(BrowserStorageService.getToken(false))) {
                 this.props.newUser(BrowserStorageService.getUser(false))
                 this.props.newIsLogged(true)
@@ -55,6 +61,7 @@ class UserButton extends Component {
         if (await ApiPhoneService.isValidToken(BrowserStorageService.getToken(this.props.rememberMe))) {
             if (this.props.user.idLastPhonePurchased === -1) {
                 console.log("Yo haven't bought any phone yet")
+                this.setState({ showSnackBar: true })
             } else {
                 this.props.newLastPurchaseRedirect(true)
             }
@@ -93,11 +100,16 @@ class UserButton extends Component {
                     color="inherit"
                     size="small"
                 >
-                    
-                <AccountCircle  />
+                    <AccountCircle />
                 </IconButton>
                 <LoginDialog />
+                <SnackBarTimer
+                    className="snackBar"
+                    open={this.state.showSnackBar}
+                    onClose={(ev, reason) => this.setState({ showSnackBar: false })}
+                    message="You have not bought anything yet" />
                 {this.props.lastPurchaseRedirect && <Redirect push to="/purchased" />}
+
             </div>
         );
     }
