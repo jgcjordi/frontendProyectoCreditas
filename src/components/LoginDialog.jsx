@@ -56,6 +56,29 @@ class LoginDialog extends Component {
         }
     }
 
+    async tryNewRegistry() {
+        const dataUserFromApi = await ApiPhoneService.tryNewRegistry(
+            this.state.emailTextBox,
+            this.state.passwordTextBox,
+            this.state.nameTextBox);
+        console.log(dataUserFromApi)
+        if (dataUserFromApi) {
+            this.props.newUser(dataUserFromApi)
+            BrowserStorageService.saveUserOnBrowserStorage(dataUserFromApi, this.props.rememberMe)
+            BrowserStorageService.saveTokenOnBrowserStorage(dataUserFromApi.password, this.props.rememberMe)
+            this.props.newIsLogged(true)
+            this.props.newShowLoginBox(false)
+            this.setState({
+                isEmailOrPasswordWrong: false,
+                isRegister: false,
+                isUserAlredyExist: false,
+                nameWrong: false
+            })
+        } else {
+            this.setState({ isUserAlredyExist: true })
+        }
+    }
+
 
     ////////////////LISTENERS////////////
 
@@ -68,26 +91,44 @@ class LoginDialog extends Component {
         if (this.state.emailTextBox !== "" && this.state.passwordTextBox !== "") {
             if (this.state.isRegister) {
                 if (this.state.nameTextBox !== "") {
-                    
+                    this.setState({
+                        isEmailOrPasswordWrong: false,
+                        nameWrong: false,
+                        isUserAlredyExist: false
+                    })
+                    this.tryNewRegistry()
+
                 } else {
-                    this.setState({ nameWrong: true })
+                    this.setState({ 
+                        nameWrong: true,
+                        isEmailOrPasswordWrong: false,
+                        isUserAlredyExist: false
+                     })
                 }
             } else {
+                this.setState({ isEmailOrPasswordWrong: false })
                 this.tryLogin()
             }
         } else {
-            this.setState({ isEmailOrPasswordWrong: true })
+            this.setState({
+                isEmailOrPasswordWrong: true,
+                nameWrong: false,
+                isUserAlredyExist: false
+            })
         }
 
     }
 
-    handleClose = () => {
+    onCloseLoginDialog = () => {
         this.props.newShowLoginBox(false)
         this.setState({
             isEmailOrPasswordWrong: false,
             isRegister: false,
             isUserAlredyExist: false,
             nameWrong: false,
+            emailTextBox: "",
+            nameTextBox: "",
+            passwordTextBox: "",
         })
     };
 
@@ -107,7 +148,7 @@ class LoginDialog extends Component {
 
     render() {
         return (
-            <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" open={this.props.showLoginBox}>
+            <Dialog onClose={this.onCloseLoginDialog} aria-labelledby="simple-dialog-title" open={this.props.showLoginBox}>
                 <div className="LoginDialog">
                     <div className="boxLogin">
                         <form className="login-form">

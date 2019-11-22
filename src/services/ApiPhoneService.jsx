@@ -53,6 +53,25 @@ class ApiPhoneService {
     else { return false }
   }
 
+  async tryNewRegistry(email, password, name) {
+    let status
+    let userData
+    await axios.post(
+      `${this.BASE_URL_USER}/singIn`, {
+      email: `${email}`,
+      password: `${password}`,
+      name: `${name}`
+    }
+    ).then(response => {
+      if (response.status === 200) {
+        status = true
+        userData = response.data
+      }
+    }).catch(response => {status = false});
+    if (status) { return userData }
+    else { return false }
+  }
+
   async purchasePhone(idUser, idPhone, idVersion, idColor, token) {
     let status = false
     let userData
