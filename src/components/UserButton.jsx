@@ -74,6 +74,12 @@ class UserButton extends Component {
 
     }
 
+    userLogOut(){
+        BrowserStorageService.deleteDataLogin(this.props.rememberMe)
+        this.props.newIsLogged(false)
+        this.props.newRememberMe(false)
+    }
+
 
     ////////////////LISTENERS////////////
     onUserClicked = () => {
@@ -82,6 +88,8 @@ class UserButton extends Component {
                 this.userStillLoggedShowPurchase()
             } else {
                 console.log("Here te button User dont show nothing")
+                this.userLogOut()
+                this.props.history.push('/')
             }
         } else {
             this.props.newShowLoginBox(true)
