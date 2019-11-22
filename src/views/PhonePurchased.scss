@@ -1,0 +1,47 @@
+.PhonePurchased {
+    flex: 1 0 auto;
+    background-color: #f5f5f5;
+    width: 1fr;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    padding-bottom: 2rem;
+    .congratulations {}
+    .phonePurchased {
+        text-decoration: underline;
+    }
+    .dataPhone {
+        align-items: center;
+        justify-content: center;
+        @media (min-width: 992px) {
+            display: flex;
+            text-align: left;
+        }
+        .imgPhone {
+            height: 16rem;
+            padding-right: 2rem;
+        }
+        .allDataText {
+            .model-price {
+                display: flex;
+                justify-content: center;
+                padding-top: 1rem;
+                padding-bottom: 1.5rem;
+                font-size: 1.2rem;
+                text-decoration: underline;
+                .price {
+                    padding-left: 1rem;
+                    font-weight: bold;
+                }
+                @media (min-width: 992px) {
+                    justify-content: left;
+                }
+            }
+            .features {
+                padding-bottom: 0.75rem;
+            }
+            @media (min-width: 992px) {
+                max-width: 50%;
+            }
+        }
+    }
+}

@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import { newIsBackButton, newIsSearchTextBox } from '../actions/toolbar';
 import { newLastPurchaseRedirect } from '../actions/user';
 
+import './PhonePurchased.scss';
+
 
 class PhonePurchased extends Component {
 
@@ -22,19 +24,25 @@ class PhonePurchased extends Component {
       ram: 0,
       storage: 0,
       dataPhone: "",
+      
+      lastPhonePurchasedDataRecived: false,
     };
 
     ///Components to Render in Toolbar
-    this.props.newIsBackButton(true)
+    this.props.newIsBackButton(false)
     this.props.newIsSearchTextBox(false)
     this.props.newLastPurchaseRedirect(false)
-    
-    this.getPhoneFromAPI()
+
   }
 
 
 
   ////////////////METHODS////////////
+
+  startGetPhoneFromAPI() {
+    this.getPhoneFromAPI()
+    return null
+  }
 
   async getPhoneFromAPI() {
     const dataPhoneFromApi = await ApiPhoneService.getPhoneById(this.props.user.idLastPhonePurchased);
@@ -52,11 +60,31 @@ class PhonePurchased extends Component {
       price: version[0].price,
       ram: version[0].ram,
       storage: version[0].storage,
-      dataPhone: dataPhoneFromApi.data
-
+      dataPhone: dataPhoneFromApi.data,
+      lastPhonePurchasedDataRecived: true
     })
   }
 
+  lastPurchaseExist() {
+    return <div>
+      <h2 className="congratulations">
+        {this.props.isNewPurchase ? "Congratulations " : "Hi, "}
+        {this.props.user.name}</h2>
+      <h5 className="phonePurchased">
+        {this.props.isNewPurchase ? "You have purchased a new phone! " : "This is your last phone purchased: "}</h5>
+      <div className="dataPhone">
+        <img className="imgPhone" src={this.state.src} alt="Phone Purchased" />
+        <div className="allDataText">
+          <div className="model-price">
+            <div>{this.state.brand} {this.state.model}</div>
+            <div className="price">{this.state.price}€</div>
+          </div>
+          <div className="features">Color: {this.state.color} - RAM: {this.state.ram}GB · Storage: {this.state.storage}GB</div>
+          <div>{this.state.dataPhone}</div>
+        </div>
+      </div>
+    </div >
+  }
 
 
   ////////////////RENDER////////////
@@ -65,14 +93,12 @@ class PhonePurchased extends Component {
   render() {
 
     return (
+
       <div className='PhonePurchased'>
-        <h2>Congratulations {this.props.user.name}</h2>
-        <h5>You have purchased a new phone!</h5>
-        <img className="imgPhone" style={{ height: "18rem" }} src={this.state.src} alt="Phone" />
-        <h5>{this.state.brand} {this.state.model}</h5>
-        <h5>{this.state.price}€</h5>
-        <h5>Color: {this.state.color} - RAM: {this.state.ram}GB · Storage: {this.state.storage}GB</h5>
-        <h5>{this.state.dataPhone}</h5>
+        {this.props.user.idLastPhonePurchased &&
+          !this.state.lastPhonePurchasedDataRecived &&
+          this.startGetPhoneFromAPI()}
+        {this.state.lastPhonePurchasedDataRecived && this.lastPurchaseExist()}
       </div >
     );
 
@@ -80,13 +106,14 @@ class PhonePurchased extends Component {
 }
 
 
-  ////////////////REDUX////////////
+////////////////REDUX////////////
 
 const mapStateToProps = state => ({
   isBackButton: state.toolbar.isBackButton,
   isSearchTextBox: state.toolbar.isSearchTextBox,
   user: state.user.user,
-  lastPurchaseRedirect: state.user.lastPurchaseRedirect
+  lastPurchaseRedirect: state.user.lastPurchaseRedirect,
+  isNewPurchase: state.user.isNewPurchase
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -37,3 +37,11 @@ export const newLastPurchaseRedirect =
             lastPurchaseRedirect,
         }
     })
+
+export const newIsNewPurchase =
+    (isNewPurchase) => ({
+        type: 'NEW_IS_NEW_PURCHASE',
+        payload: {
+            isNewPurchase,
+        }
+    })

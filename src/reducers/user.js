@@ -3,7 +3,8 @@ const INITIAL_STATE = {
     isLogged: false,
     rememberMe: false,
     user: [],
-    lastPurchaseRedirect: false
+    lastPurchaseRedirect: false,
+    isNewPurchase: false,
 }
 
 /////REDUCER WITH HIS ACTIONS/////
@@ -33,6 +34,11 @@ const user = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 lastPurchaseRedirect: action.payload.lastPurchaseRedirect,
+            }
+        case 'NEW_IS_NEW_PURCHASE':
+            return {
+                ...state,
+                isNewPurchase: action.payload.isNewPurchase,
             }
 
         default:

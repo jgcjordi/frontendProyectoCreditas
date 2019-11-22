@@ -26,6 +26,7 @@ class UserButton extends Component {
     constructor(props) {
         super(props);
         this.shouldRememberLastUser()
+        
     }
 
 

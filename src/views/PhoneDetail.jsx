@@ -6,10 +6,9 @@ import { Redirect } from 'react-router';
 
 import { connect } from 'react-redux';
 import { newIsBackButton, newIsSearchTextBox } from '../actions/toolbar';
-import { newShowLoginBox, newUser, newIsLogged, newRememberMe } from '../actions/user';
+import { newShowLoginBox, newUser, newIsLogged, newRememberMe, newIsNewPurchase } from '../actions/user';
 
 import './PhoneDetail.scss';
-
 import Radio from '@material-ui/core/Radio';
 import Fab from '@material-ui/core/Fab';
 
@@ -62,6 +61,7 @@ class PhoneDetail extends Component {
     if (dataUserFromApi) {//Purchase Success
       BrowserStorageService.saveUserOnBrowserStorage(dataUserFromApi, this.props.rememberMe)
       this.props.newUser(dataUserFromApi)
+      this.props.newIsNewPurchase(true)
 
       this.setState({ purchaseRedirect: true })
 
@@ -212,7 +212,8 @@ const mapDispatchToProps = dispatch => ({
   newShowLoginBox: (showLoginBox) => dispatch(newShowLoginBox(showLoginBox)),
   newIsLogged: (isLogged) => dispatch(newIsLogged(isLogged)),
   newRememberMe: (rememberMe) => dispatch(newRememberMe(rememberMe)),
-  newUser: (user) => dispatch(newUser(user))
+  newUser: (user) => dispatch(newUser(user)),
+  newIsNewPurchase: (isNewPurchase) => dispatch(newIsNewPurchase(isNewPurchase))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PhoneDetail);

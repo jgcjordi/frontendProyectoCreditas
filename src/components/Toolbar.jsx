@@ -14,7 +14,7 @@ function Toolbar(props) {
   return (
     <div className="Toolbar">
       <BackButton visibility={props.isBackButton ? 'visible' : 'hidden'} />
-      <a href="http://localhost:3000">
+      <a className="linkLogo" href="http://localhost:3000">
         <img className="logo" src={PhoneBear} alt="Phone Bear logo"></img>
       </a>
       <SearcherTextBox visibility={props.isSearchTextBox ? 'visible' : 'hidden'} />
