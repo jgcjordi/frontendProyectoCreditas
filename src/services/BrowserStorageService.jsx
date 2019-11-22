@@ -46,6 +46,10 @@ class BrowserStorageService {
     ifExistTokenOnLocalStorage() {
         return localStorage.getItem('Token') === null ? false : true
     }
+
+    ifExistTokenOnSessionStorage() {
+        return sessionStorage.getItem('Token') === null ? false : true
+    }
 }
 
 export default new BrowserStorageService();

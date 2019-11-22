@@ -38,7 +38,14 @@ class UserButton extends Component {
                 this.props.newIsLogged(true)
                 this.props.newRememberMe(true)
             } else {
-                BrowserStorageService.deleteDataLogin(this.props.rememberMe)
+                BrowserStorageService.deleteDataLogin(true)
+            }
+        }else if(BrowserStorageService.ifExistTokenOnSessionStorage()){
+            if (await ApiPhoneService.isValidToken(BrowserStorageService.getToken(false))) {
+                this.props.newUser(BrowserStorageService.getUser(false))
+                this.props.newIsLogged(true)
+            } else {
+                BrowserStorageService.deleteDataLogin(false)
             }
         }
     }
