@@ -28,7 +28,11 @@ class LoginDialog extends Component {
             emailTextBox: "",
             nameTextBox: "",
             passwordTextBox: "",
-            isEmailOrPasswordWrong: false
+            isEmailOrPasswordWrong: false,
+
+            isRegister: false,
+            isUserAlredyExist: false,
+            nameWrong: false,
         };
     }
 
@@ -36,7 +40,7 @@ class LoginDialog extends Component {
     ////////////////METHODS////////////
 
 
-    async trySignIn() {
+    async tryLogin() {
         const dataUserFromApi = await ApiPhoneService.tryLogIn(this.state.emailTextBox, this.state.passwordTextBox);
         console.log(dataUserFromApi)
         if (dataUserFromApi) {
@@ -62,7 +66,15 @@ class LoginDialog extends Component {
 
     onSignInClicked = () => {
         if (this.state.emailTextBox !== "" && this.state.passwordTextBox !== "") {
-            this.trySignIn()
+            if (this.state.isRegister) {
+                if (this.state.nameTextBox !== "") {
+                    
+                } else {
+                    this.setState({ nameWrong: true })
+                }
+            } else {
+                this.tryLogin()
+            }
         } else {
             this.setState({ isEmailOrPasswordWrong: true })
         }
@@ -71,8 +83,23 @@ class LoginDialog extends Component {
 
     handleClose = () => {
         this.props.newShowLoginBox(false)
-        this.setState({ isEmailOrPasswordWrong: false })
+        this.setState({
+            isEmailOrPasswordWrong: false,
+            isRegister: false,
+            isUserAlredyExist: false,
+            nameWrong: false,
+        })
     };
+
+    onNewRegisterClicked = () => {
+        this.setState({
+            emailTextBox: "",
+            nameTextBox: "",
+            passwordTextBox: "",
+            isEmailOrPasswordWrong: false,
+            isRegister: true,
+        })
+    }
 
 
     ////////////////RENDER////////////
@@ -93,14 +120,17 @@ class LoginDialog extends Component {
                                 value={this.state.emailTextBox}
                                 onKeyDown={(ev) => ev.key === 'Enter' && this.onSignInClicked()}
                             />
-                            <input
-                                className="textBoxLogin"
-                                type="text"
-                                placeholder="Name"
-                                onChange={(ev) => this.setState({ nameTextBox: ev.target.value })}
-                                value={this.state.nameTextBox}
-                                onKeyDown={(ev) => ev.key === 'Enter' && this.onSignInClicked()}
-                            />
+                            {this.state.isRegister &&
+                                <input
+                                    className="textBoxLogin"
+                                    type="text"
+                                    placeholder="Name"
+                                    onChange={(ev) => this.setState({ nameTextBox: ev.target.value })}
+                                    value={this.state.nameTextBox}
+                                    onKeyDown={(ev) => ev.key === 'Enter' && this.onSignInClicked()}
+                                />
+                            }
+
                             <input
                                 className="textBoxLogin"
                                 type="password"
@@ -123,11 +153,21 @@ class LoginDialog extends Component {
                                 Remember me
                             </div>
                             <Button variant="contained" color="primary" className="buttonSignIn" onClick={this.onSignInClicked}>
-                                Sing in
+                                {this.state.isRegister ? "Sign in" : "Login"}
                             </Button>
                         </div>
+                        {!this.state.isRegister &&
+                            <div className="sing-up-new">
+                                New?
+                            <span onClick={this.onNewRegisterClicked}>Sing Up</span>
+                            </div>
+                        }
                         {this.state.isEmailOrPasswordWrong &&
                             <h6>Email or password is wrong</h6>}
+                        {this.state.nameWrong &&
+                            <h6>Name is wrong</h6>}
+                        {this.state.isUserAlredyExist &&
+                            <h6>User already exist</h6>}
                     </div>
                 </div>
             </Dialog>
