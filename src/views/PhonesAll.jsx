@@ -38,7 +38,6 @@ class PhonesAll extends Component {
 
     async getPhonesPagedFromAPI(page) {
         const dataPhonesFromApi = await ApiPhoneService.getAllPhonesPaged(page);
-        console.log(dataPhonesFromApi)
         this.props.newPhonesJSON(dataPhonesFromApi.phoneList)
         this.setState({ totalPages: dataPhonesFromApi.totalPages });
     }

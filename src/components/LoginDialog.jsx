@@ -42,7 +42,6 @@ class LoginDialog extends Component {
 
     async tryLogin() {
         const dataUserFromApi = await ApiPhoneService.tryLogIn(this.state.emailTextBox, this.state.passwordTextBox);
-        console.log(dataUserFromApi)
         if (dataUserFromApi) {
             this.props.newUser(dataUserFromApi)
             BrowserStorageService.saveUserOnBrowserStorage(dataUserFromApi, this.props.rememberMe)
@@ -61,7 +60,6 @@ class LoginDialog extends Component {
             this.state.emailTextBox,
             this.state.passwordTextBox,
             this.state.nameTextBox);
-        console.log(dataUserFromApi)
         if (dataUserFromApi) {
             this.props.newUser(dataUserFromApi)
             BrowserStorageService.saveUserOnBrowserStorage(dataUserFromApi, this.props.rememberMe)

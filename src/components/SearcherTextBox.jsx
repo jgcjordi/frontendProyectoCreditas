@@ -16,13 +16,11 @@ function SearcherTextBox(props) {
     const getDataPhonesFilteredByKeywords = async () => {
         if (props.phoneSearchText === "") {
             const dataPhonesFromApi = await ApiPhoneService.getAllPhonesPaged(0);
-            console.log(dataPhonesFromApi)
             props.newPhonesJSON(dataPhonesFromApi.phoneList)
             props.newIsBarPagesVisible(true)
             props.newActivePage(1)
         } else {
             const dataPhonesFromApi = await ApiPhoneService.getPhonesFilteredByKeywords(props.phoneSearchText);
-            console.log(dataPhonesFromApi)
             props.newPhonesJSON(dataPhonesFromApi)
             props.newPhoneSearchText("")
             props.newIsBarPagesVisible(false)
@@ -34,7 +32,7 @@ function SearcherTextBox(props) {
     return (
         <div className="SearcherTextBox" style={{ visibility: props.visibility }}>
                 <div className="searchIcon">
-                    <SearchIcon />
+                    <SearchIcon/>
                 </div>
             <input
                 className="textBoxSearch"
@@ -44,7 +42,6 @@ function SearcherTextBox(props) {
                 onKeyDown={(ev) => ev.key === 'Enter' && getDataPhonesFilteredByKeywords()}
                 value={props.phoneSearchText}
             />
-            {/* <button className="buttonSearch" onClick={getDataPhonesFilteredByKeywords}>Search</button> */}
         </div>
     );
 }

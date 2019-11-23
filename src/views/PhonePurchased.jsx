@@ -46,7 +46,6 @@ class PhonePurchased extends Component {
 
   async getPhoneFromAPI() {
     const dataPhoneFromApi = await ApiPhoneService.getPhoneById(this.props.user.idLastPhonePurchased);
-    console.log(dataPhoneFromApi)
     const version = dataPhoneFromApi.versions.filter(version =>
       version.id_version_phone === this.props.user.idLastPhonePurchasedVersion)
     const color = dataPhoneFromApi.colors.filter(color =>
