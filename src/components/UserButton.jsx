@@ -18,6 +18,8 @@ import {
 } from '../actions/user';
 
 import './UserButton.scss';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
 
 
 
@@ -30,9 +32,11 @@ class UserButton extends Component {
 
         this.state = {
             showSnackBar: false,
+            showUserMenu: false,
         };
         this.shouldRememberLastUser()
 
+        this.refUserButton = React.createRef();
     }
 
 
@@ -74,7 +78,7 @@ class UserButton extends Component {
 
     }
 
-    userLogOut(){
+    userLogOut() {
         BrowserStorageService.deleteDataLogin(this.props.rememberMe)
         this.props.newIsLogged(false)
         this.props.newRememberMe(false)
@@ -84,21 +88,36 @@ class UserButton extends Component {
     ////////////////LISTENERS////////////
     onUserClicked = () => {
         if (this.props.isLogged) {
-            if (this.props.location.pathname !== "/purchased") {
-                this.userStillLoggedShowPurchase()
-            } else {
-                console.log("Here te button User dont show nothing")
-                this.userLogOut()
-                this.props.history.push('/')
-            }
+            this.setState({ showUserMenu: true })
         } else {
             this.props.newShowLoginBox(true)
+            console.log(this.refUserButton)
         }
     }
 
+    onLastPurchaseClick = () => {
+        this.setState({showUserMenu: false})
+        this.userStillLoggedShowPurchase()
+    }
+
+    onLogOutClick = () => {
+        this.setState({showUserMenu: false})
+        this.userLogOut()
+        if (this.props.location.pathname === "/purchased") {
+            window.location.href="http://localhost:3000/"
+        }
+    }
+
+    onUserMenuClose = () => {
+        this.setState({showUserMenu: false})
+    }
+
+
+    ////////////////RENDER////////////
+
     render() {
         return (
-            <div className="UserButton">
+            <div className="UserButton" ref={this.refUserButton}>
                 <IconButton
                     className="userIcon"
                     aria-label="account of current user"
@@ -116,6 +135,24 @@ class UserButton extends Component {
                     open={this.state.showSnackBar}
                     onClose={(ev, reason) => this.setState({ showSnackBar: false })}
                     message="You have not bought anything yet" />
+                <Menu
+                    id="menu-appbar"
+                    anchorEl={this.refUserButton.current}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    open={this.state.showUserMenu}
+                    onClose={this.onUserMenuClose}
+                >
+                    {!(this.props.location.pathname === "/purchased") && <MenuItem onClick={this.onLastPurchaseClick}>Last Purchase</MenuItem>}
+                    <MenuItem onClick={this.onLogOutClick}>Logout</MenuItem>
+                </Menu>
                 {this.props.lastPurchaseRedirect && <Redirect push to="/purchased" />}
 
             </div>
