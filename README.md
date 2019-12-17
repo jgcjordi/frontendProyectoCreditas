@@ -1,6 +1,7 @@
 ## This constant two-part project:
-[Frontend](https://github.com/jgcjordi/frontendProyectoCreditas)
-[Backend](https://github.com/jgcjordi/backendProyectoCreditas)
+* [Frontend](https://github.com/jgcjordi/frontendProyectoCreditas)
+
+* [Backend](https://github.com/jgcjordi/backendProyectoCreditas)
 
 ### This is the pdf summary of both parties:
 
