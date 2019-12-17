@@ -63,10 +63,10 @@ class UserButton extends Component {
 
     async userStillLoggedShowPurchase() {
         if (await ApiPhoneService.isValidToken(BrowserStorageService.getToken(this.props.rememberMe))) {
-            if (this.props.user.idLastPhonePurchased === -1) {
-                this.setState({ showSnackBar: true })
-            } else {
+            if (await ApiPhoneService.getLastProductPurchase(BrowserStorageService.getToken(this.props.rememberMe))) {
                 this.props.newLastPurchaseRedirect(true)
+            } else {
+                this.setState({ showSnackBar: true })
             }
         } else {
             BrowserStorageService.deleteDataLogin(this.props.rememberMe)

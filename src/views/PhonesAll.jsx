@@ -37,9 +37,9 @@ class PhonesAll extends Component {
     ////////////////METHODS////////////
 
     async getPhonesPagedFromAPI(page) {
-        const dataPhonesFromApi = await ApiPhoneService.getAllPhonesPaged(page);
-        this.props.newPhonesJSON(dataPhonesFromApi.phoneList)
-        this.setState({ totalPages: dataPhonesFromApi.totalPages });
+        const dataProductsFromApi = await ApiPhoneService.getAllCheapestModelsWithStockPaged(page);
+        this.props.newPhonesJSON(dataProductsFromApi.content)
+        this.setState({ totalPages: dataProductsFromApi.totalPages });
     }
 
     ////////////////LISTENERS////////////
@@ -56,11 +56,11 @@ class PhonesAll extends Component {
         return (
             <div className="PhonesAll">
                 <div className='phonesList'>
-                    {this.props.phonesJSON.map(phone => (
-                        <div key={phone.id_phone}>
+                    {this.props.phonesJSON.map(product => (
+                        <div key={product.model.id}>
                             <div className='phoneCardLink'>
-                                <Link to={'/phone/' + phone.id_phone} key={phone.id_phone} style={{textDecoration: "none"}}>
-                                    <CardPhone phone={phone} key={phone.id_phone} />
+                                <Link to={'/phone/' + product.model.id} key={product.model.id} style={{textDecoration: "none"}}>
+                                    <CardPhone phone={product} key={product.model.id} />
                                 </Link>
                             </div>
                         </div>

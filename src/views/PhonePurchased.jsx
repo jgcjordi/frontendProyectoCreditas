@@ -7,6 +7,7 @@ import { newIsBackButton, newIsSearchTextBox } from '../actions/toolbar';
 import { newLastPurchaseRedirect } from '../actions/user';
 
 import './PhonePurchased.scss';
+import BrowserStorageService from '../services/BrowserStorageService';
 
 
 class PhonePurchased extends Component {
@@ -33,33 +34,26 @@ class PhonePurchased extends Component {
     this.props.newIsSearchTextBox(false)
     this.props.newLastPurchaseRedirect(false)
 
+    this.getLastUserPurchaseFromAPI()
   }
 
 
 
   ////////////////METHODS////////////
 
-  startGetPhoneFromAPI() {
-    this.getPhoneFromAPI()
-    return null
-  }
-
-  async getPhoneFromAPI() {
-    const dataPhoneFromApi = await ApiPhoneService.getPhoneById(this.props.user.idLastPhonePurchased);
-    const version = dataPhoneFromApi.versions.filter(version =>
-      version.id_version_phone === this.props.user.idLastPhonePurchasedVersion)
-    const color = dataPhoneFromApi.colors.filter(color =>
-      color.idColorPhone === this.props.user.idLastPhonePurchasedColor)
+  async getLastUserPurchaseFromAPI() {
+    const token = BrowserStorageService.getToken(this.props.rememberMe)
+    const dataPhoneFromApi = await ApiPhoneService.getLastProductPurchase(token);
     this.setState({
       phone: dataPhoneFromApi,
-      src: dataPhoneFromApi.src,
-      brand: dataPhoneFromApi.brand,
-      model: dataPhoneFromApi.model,
-      color: color[0].color,
-      price: version[0].price,
-      ram: version[0].ram,
-      storage: version[0].storage,
-      dataPhone: dataPhoneFromApi.data,
+      src: dataPhoneFromApi.model.image,
+      brand: dataPhoneFromApi.brand.name,
+      model: dataPhoneFromApi.model.name,
+      color: dataPhoneFromApi.color.name,
+      price: dataPhoneFromApi.price,
+      ram: dataPhoneFromApi.ram.value,
+      storage: dataPhoneFromApi.storage.value,
+      dataPhone: dataPhoneFromApi.model.description,
       lastPhonePurchasedDataRecived: true
     })
   }
@@ -92,11 +86,7 @@ class PhonePurchased extends Component {
   render() {
 
     return (
-
       <div className='PhonePurchased'>
-        {this.props.user.idLastPhonePurchased &&
-          !this.state.lastPhonePurchasedDataRecived &&
-          this.startGetPhoneFromAPI()}
         {this.state.lastPhonePurchasedDataRecived && this.lastPurchaseExist()}
       </div >
     );
@@ -112,7 +102,8 @@ const mapStateToProps = state => ({
   isSearchTextBox: state.toolbar.isSearchTextBox,
   user: state.user.user,
   lastPurchaseRedirect: state.user.lastPurchaseRedirect,
-  isNewPurchase: state.user.isNewPurchase
+  isNewPurchase: state.user.isNewPurchase,
+  rememberMe: state.user.rememberMe
 })
 
 const mapDispatchToProps = dispatch => ({
