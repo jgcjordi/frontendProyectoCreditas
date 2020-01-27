@@ -15,8 +15,8 @@ function SearcherTextBox(props) {
 
     const getDataPhonesFilteredByKeywords = async () => {
         if (props.phoneSearchText === "") {
-            const dataPhonesFromApi = await ApiPhoneService.getAllPhonesPaged(0);
-            props.newPhonesJSON(dataPhonesFromApi.phoneList)
+            const dataPhonesFromApi = await ApiPhoneService.getAllCheapestModelsWithStockPaged(0);
+            props.newPhonesJSON(dataPhonesFromApi.content)
             props.newIsBarPagesVisible(true)
             props.newActivePage(1)
         } else {
