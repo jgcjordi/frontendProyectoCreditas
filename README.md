@@ -9,11 +9,11 @@ In addition, when the server is turned off, the data is lost as it is a
 Free version, so any changes you make now will be lost if you log in after the server has been turned off.
 
 The actions you can take are:
--Register on the web.
--Buy a phone once registered.
+* Register on the web.
+* Buy a phone once registered.
 
 To consider:
--In the database there is a stock of 2 products of each phone (model-color-ram), so when you buy the same phone twice (with the same specifications) it will no longer show on the web because the stock will have finished.
+* In the database there is a stock of 2 products of each phone (model-color-ram), so when you buy the same phone twice (with the same specifications) it will no longer show on the web because the stock will have finished.
 
 ## This constant two-part project:
 * [Frontend](https://github.com/jgcjordi/frontendProyectoCreditas)
