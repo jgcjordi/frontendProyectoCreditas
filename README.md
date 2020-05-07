@@ -1,4 +1,4 @@
-## This constant two-part project:
+## Introduction:
 The frontend is deployed in github pages at:
 [https://jgcjordi.github.io/frontendProyectoCreditas/](https://jgcjordi.github.io/frontendProyectoCreditas/)
 
