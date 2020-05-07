@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "617290428fbe42aa28c3a60d673b25f3",
+    "revision": "96d57d66128b63eb05cc47ce9d1cd79e",
     "url": "/frontendProyectoCreditas/index.html"
   },
   {
-    "revision": "dd254c087b074468aa12",
+    "revision": "bc4b952d0a1b364d853f",
     "url": "/frontendProyectoCreditas/static/css/main.3cb757b0.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/frontendProyectoCreditas/static/js/2.65bb0a9c.chunk.js"
   },
   {
-    "revision": "dd254c087b074468aa12",
-    "url": "/frontendProyectoCreditas/static/js/main.ab8a3665.chunk.js"
+    "revision": "bc4b952d0a1b364d853f",
+    "url": "/frontendProyectoCreditas/static/js/main.874489af.chunk.js"
   },
   {
     "revision": "5bed26422d1bb9608647",
