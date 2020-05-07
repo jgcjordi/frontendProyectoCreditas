@@ -102,7 +102,7 @@ class UserButton extends Component {
         this.setState({showUserMenu: false})
         this.userLogOut()
         if (this.props.location.pathname === "/purchased") {
-            window.location.href="http://localhost:3000/"
+            window.location.href=ApiPhoneService.HOME_URL
         }
     }
 

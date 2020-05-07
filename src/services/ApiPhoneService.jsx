@@ -3,10 +3,12 @@ import axios from 'axios';
 class ApiPhoneService {
 
   constructor() {
+    this.HOME_URL = 'https://jgcjordi.github.io/frontendProyectoCreditas/'
     this.BASE_URL_PHONE = 'https://app-backend-creditas.herokuapp.com/api/v1/products';
     this.BASE_URL_USER = 'https://app-backend-creditas.herokuapp.com/api/v1/user';
-//    this.BASE_URL_PHONE = 'http://localhost:8080/api/v1/products';
-//  this.BASE_URL_USER = 'http://localhost:8080/api/v1/user';
+/*     this.HOME_URL = 'http://localhost:3000';
+    this.BASE_URL_PHONE = 'http://localhost:8080/api/v1/products';
+    this.BASE_URL_USER = 'http://localhost:8080/api/v1/user'; */
   }
 
   async getAllCheapestModelsWithStockPaged(page) {
