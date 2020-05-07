@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/frontendProyectoCreditas/static/css/main.3cb757b0.chunk.css",
+    "main.js": "/frontendProyectoCreditas/static/js/main.ab8a3665.chunk.js",
+    "main.js.map": "/frontendProyectoCreditas/static/js/main.ab8a3665.chunk.js.map",
+    "runtime-main.js": "/frontendProyectoCreditas/static/js/runtime-main.b998b14b.js",
+    "runtime-main.js.map": "/frontendProyectoCreditas/static/js/runtime-main.b998b14b.js.map",
+    "static/js/2.65bb0a9c.chunk.js": "/frontendProyectoCreditas/static/js/2.65bb0a9c.chunk.js",
+    "static/js/2.65bb0a9c.chunk.js.map": "/frontendProyectoCreditas/static/js/2.65bb0a9c.chunk.js.map",
+    "index.html": "/frontendProyectoCreditas/index.html",
+    "precache-manifest.43e48f4f41f5162643f2e002a01654e8.js": "/frontendProyectoCreditas/precache-manifest.43e48f4f41f5162643f2e002a01654e8.js",
+    "service-worker.js": "/frontendProyectoCreditas/service-worker.js",
+    "static/css/main.3cb757b0.chunk.css.map": "/frontendProyectoCreditas/static/css/main.3cb757b0.chunk.css.map",
+    "static/media/phoneBear.jpg": "/frontendProyectoCreditas/static/media/phoneBear.b268748b.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.b998b14b.js",
+    "static/js/2.65bb0a9c.chunk.js",
+    "static/css/main.3cb757b0.chunk.css",
+    "static/js/main.ab8a3665.chunk.js"
+  ]
+}
